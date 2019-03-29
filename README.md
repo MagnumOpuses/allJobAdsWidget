@@ -6,7 +6,18 @@
 # All Job Ads Widget v 1.0
 
 Do you want to help? Get involved!
-see [TODO]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/TODO.md)
+see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
+
+## Getting started
+You can choose to host on premises or use our host in the cloud, it's your choice.
+
+## Docker
+`%> sudo docker build -t <Image name> -f Dockerfile`
+<br> run
+<br> `%>sudo docker run -it  -p 8080:8080 <Image name>`
+<br> access test page
+<br> `http://localhost:8080/alljobads/`
+
 
 Usages
 ------
