@@ -4,6 +4,9 @@
 [A JobTech Project]( https://www.jobtechdev.se)
 
 # All Job Ads Widget v 1.0
+Use at you own risk.
+This widget is using a backend service that not yet is in production mode, therefore no promises about robustness or correctness.
+The api endpoint can be altered with no notice and effect the widget function.
 
 Do you want to help? Get involved!
 see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
