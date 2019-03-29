@@ -1,7 +1,12 @@
+![alt text][logo]
+
+[logo]: https://github.com/MagnumOpuses/project-meta/blob/master/img/jobtechdev_black.png "JobTech dev logo"
+[A JobTech Project]( https://www.jobtechdev.se)
+
 #All Job Ads Widget v 1.0
 
 This goes with out saying: "This is still work in progress." ;) ,
-see [TODO]( https://github.com//blob/master/TODO.md)
+see [TODO]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/TODO.md)
 
 Usages
 ------
