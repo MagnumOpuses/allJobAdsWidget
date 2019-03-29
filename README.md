@@ -5,7 +5,7 @@
 
 # All Job Ads Widget v 1.0
 
-This goes with out saying: "This is still work in progress." ;) ,
+Do you want to help? Get involved!
 see [TODO]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/TODO.md)
 
 Usages
