@@ -6,13 +6,14 @@
 # All Job Ads Widget v 1.0
 Use at you own risk.
 This widget is using a backend service that not yet is in production mode, therefore no promises about robustness or correctness.
-The api endpoint can be altered with no notice and effect the widget function.
-
+The api endpoint can be altered with no notice and effect the widget function.<BR>
+[Here you have aworking example]( https://widgets.jobtechdev.se/alljobads/)<BR>
 Do you want to help? Get involved!
 see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
 
+
 ## Getting started
-You can choose to host on premises or use our host in the cloud, it's your choice.
+You can choose to host on premises or use our host in the cloud, it's your choice.<br>
 
 ## Docker
 `%> sudo docker build -t <Image name> -f Dockerfile`
