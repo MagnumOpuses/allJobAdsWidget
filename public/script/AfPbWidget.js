@@ -130,7 +130,7 @@
     //Load jQuery version 3.2.0 if it isn't already loaded.
     if (typeof jQuery == "undefined" || window.jQuery.fn.jquery !== "3.2.0") {
       getScript(
-        "http://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.js",
+        "https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.js",
         function() {
           if (typeof window.jQuery == "undefined") {
             if (window.console)
