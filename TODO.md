@@ -1,4 +1,4 @@
-# Vacancies Widget v 0.3
+# All Job Ads Widget
 
 TODO (not in priority order)
 ----

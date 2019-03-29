@@ -1,16 +1,18 @@
-# Vacancies Widget v 2.0.1
+#All Job Ads Widget v 1.0
 
 This goes with out saying: "This is still work in progress." ;) ,
-see [TODO]( https://github.com/jobtechdev/vacancieswidget/blob/master/TODO.md)
+see [TODO]( https://github.com//blob/master/TODO.md)
 
 Usages
 ------
 The easiest way of using the Vacancies Widget is to add references to our hosted script and needed css files at the end of the html file. See Snippet 1.
 and then place a clickable element 'afWidgetContainer' according to your preferences. 
 
-First you will need the javascript file on your site. 
+First you will need the javascript file on your site or use our hosted version.
 
-`<script src="http://.../AfPbWidget.js"></script>`
+`<script src="http://widgets.jobtechdev.se/alljobads/script/AfPbWidget.js"></script>`
+<br> or <br>
+`<script src="http://widgets.jobtechdev.se/alljobads/script/AfPbWidget.js"></script>`
 
 And a 'div' tag with id 'afWidgetContainer', where you want to display link do modal job list window and some content inside the 'div'.
 Minimum is this:
