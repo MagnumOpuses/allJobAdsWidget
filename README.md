@@ -11,7 +11,6 @@ The api endpoint can be altered with no notice and effect the widget function.<B
 Do you want to help? Get involved!
 see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
 
-
 ## Getting started
 You can choose to host on premises or use our host in the cloud, it's your choice.<br>
 
