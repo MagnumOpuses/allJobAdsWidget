@@ -2,7 +2,7 @@
   let httpRequestString = "";
   let jQuery, $;
   let baseUrl = "https://develop-sokannonser.dev.services.jtech.se/";
-  let scriptDomain = document.location.href; //"http://jobtech.digitalconcept.se/widget/vacancieswidget/";
+  let scriptDomain = "https://widgets.jobtechdev.se/alljobads/"; // dev: document.location.href;
   let $pagination,
     $afWidgetContainer,
     defaultOpts,
