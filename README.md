@@ -7,9 +7,14 @@
 Use at you own risk.
 This widget is using a backend service that not yet is in production mode, therefore no promises about robustness or correctness.
 The api endpoint can be altered with no notice and effect the widget function.<BR>
-[Here you have aworking example]( https://widgets.jobtechdev.se/alljobads/)<BR>
 Do you want to help? Get involved!
 see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
+
+## Live Demo / Example
+
+Here you have a working example: https://widgets.jobtechdev.se/alljobads/<BR>
+<BR>
+
 
 
 ## Getting started
@@ -30,9 +35,9 @@ and then place a clickable element 'afWidgetContainer' according to your prefere
 
 First you will need the javascript file on your site or use our hosted version.
 
-`<script src="http://<host>/alljobads/script/AfPbWidget.js"></script>`
+`<script src="https://<host>/<url to where you put the script>/AfPbWidget.js"></script>`
 <br> or <br>
-`<script src="http://widgets.jobtechdev.se/alljobads/script/AfPbWidget.js"></script>`
+`<script src="https://widgets.jobtechdev.se/alljobads/script/AfPbWidget.js"></script>`
 
 And a 'div' tag with id 'afWidgetContainer', where you want to display link do modal job list window and some content inside the 'div'.
 Minimum is this:
@@ -42,13 +47,6 @@ Minimum is this:
 Recomended is this: 
 
 `<div id="afWidgetContainer">Click here to see jobs</div>`
-
-This widget also supplies a count that shows number of jobs:
-
-`<div id="afJobCount"></div>`
-
-Leave this one empty. It's content will be replaced with a number. 
-
 
 To filter we have the following options: 
 
@@ -60,6 +58,11 @@ there is also a page limit
 
 * data-limit       - (number) this will limit number of ads per page in the modal.
 
+This widget also supplies a count that shows number of jobs:
+
+`<div id="afJobCount"></div>`
+
+Leave this one empty. It's content will be replaced with a number. 
 
 
 Examples
