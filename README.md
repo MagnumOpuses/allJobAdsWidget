@@ -30,7 +30,7 @@ and then place a clickable element 'afWidgetContainer' according to your prefere
 
 First you will need the javascript file on your site or use our hosted version.
 
-`<script src="http://widgets.jobtechdev.se/alljobads/script/AfPbWidget.js"></script>`
+`<script src="http://<host>/alljobads/script/AfPbWidget.js"></script>`
 <br> or <br>
 `<script src="http://widgets.jobtechdev.se/alljobads/script/AfPbWidget.js"></script>`
 
