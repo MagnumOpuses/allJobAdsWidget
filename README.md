@@ -25,7 +25,7 @@ You can choose to host on premises or use our host in the cloud, it's your choic
 
 Usages
 ------
-The easiest way of using the Vacancies Widget is to add references to our hosted script and needed css files at the end of the html file. See Snippet 1.
+The easiest way of using the AllJobs Widget is to add references to our hosted script and needed css files at the end of the html file. See Snippet 1.
 and then place a clickable element 'afWidgetContainer' according to your preferences. 
 
 First you will need the javascript file on your site or use our hosted version.
