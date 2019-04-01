@@ -1,4 +1,4 @@
-![alt text][logo]
+![alt text][logo] 
 
 [logo]: https://github.com/MagnumOpuses/project-meta/blob/master/img/jobtechdev_black.png "JobTech dev logo"
 [A JobTech Project]( https://www.jobtechdev.se)
@@ -11,6 +11,8 @@ Do you want to help? Get involved!
 see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
 
 ## Live Demo / Example
+
+![alt text](https://widgets.jobtechdev.se/alljobads/example/demo.jpg)
 
 Here you have a working example: https://widgets.jobtechdev.se/alljobads/<BR>
 <BR>
