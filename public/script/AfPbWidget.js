@@ -1,8 +1,8 @@
 (function(window, document) {
   let httpRequestString = "";
   let jQuery, $;
-  let baseUrl = "https://develop-sokannonser.dev.services.jtech.se/";
-  let scriptDomain = "https://widgets.jobtechdev.se/alljobads/"; // dev: document.location.href;
+  let apiUrl = "https://develop-sokannonser.dev.services.jtech.se/";
+  let scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0]; // dev: document.location.href;
   let $pagination,
     $afWidgetContainer,
     defaultOpts,
@@ -10,6 +10,12 @@
     afModal;
 
   // Helper functions start ---------------------------------------------------
+
+  function getScriptURL(){
+    // IE don't support currentScript, solution = querySelector
+    var script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
+    return script.src
+  }
 
   function getStylesheet(url) {
     var linkElement = document.createElement("link");
@@ -162,7 +168,7 @@
     if ($afJobCount.length) {
       if ($afJobCount[0].dataset.q.length > 0 || $afJobCount[0].dataset.places.length > 0) {
         httpRequestString =
-          baseUrl +
+          apiUrl +
           "search?show-expired=" +
           $afJobCount[0].dataset.showexpired +
           "&q=" +
@@ -411,7 +417,7 @@
     }
 
     httpRequestString =
-    baseUrl +
+    apiUrl +
     "search?show-expired=" +
     afw.dataset.showexpired +
     "&q=" +
