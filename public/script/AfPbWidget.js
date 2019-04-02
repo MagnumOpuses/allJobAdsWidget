@@ -1,8 +1,16 @@
 (function(window, document) {
+
+  // Changeable variables start --------------------------------------------------- //
+
+  const apiUrl = "https://develop-sokannonser.dev.services.jtech.se/";
+  const scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
+  const scriptsUrl = scriptDomain + "/script/";
+  const cssUrl = scriptDomain + "/css/";
+
+  // Changable variables end --------------------------------------------------- //
+
   let httpRequestString = "";
   let jQuery, $;
-  let apiUrl = "https://develop-sokannonser.dev.services.jtech.se/";
-  let scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0]; // dev: document.location.href;
   let $pagination,
     $afWidgetContainer,
     defaultOpts,
@@ -160,7 +168,7 @@
 	// Helper functions end ---------------------------------------------------
 
   var main = function($) {
-    getStylesheet(scriptDomain + "css/AfPbWidget.css");
+    getStylesheet(cssUrl + "AfPbWidget.css");
     getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
 
     var $afJobCount = $("#afJobCount");
@@ -201,8 +209,8 @@
     $afWidgetContainer = $("#afWidgetContainer");
 
     if($afWidgetContainer.length) {
-      getScript(scriptDomain + "script/pagination.js", function() {
-        getScript(scriptDomain + "script/jquery.modal.js", function() {
+      getScript(scriptsUrl + "pagination.js", function() {
+        getScript(scriptsUrl + "jquery.modal.js", function() {
             $.modal.defaults = {
                 fadeDuration: 200,
                 closeExisting: true,
