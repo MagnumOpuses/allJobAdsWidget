@@ -239,7 +239,7 @@
 						                </div>
 						            </div>
 						        </div>
-						        <div class="pagination">
+						        <div class="afPagination">
 						            <ul id="dynamic-total-pages-pagination"></ul>
 						        </div>
 						    </div>

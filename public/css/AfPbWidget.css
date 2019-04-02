@@ -54,9 +54,6 @@
     max-width: 100%;
     overflow-x: hidden;
 }
-.pagination {
-	display: flex;
-}
 
 .afTable {
     display: table;
@@ -208,7 +205,7 @@
 
 .opened .afReadMore {
     display: block;
-    animation: fade-in .5s ease-in-out both;
+    animation: af-fade-in .5s ease-in-out both;
 }
 
 .afTableCell > * {
@@ -273,7 +270,7 @@ a.afApply:visited {
     font-size: 80%;
 }
 
-.pagination {
+.afPagination, .afPagination > * {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -282,16 +279,16 @@ a.afApply:visited {
     align-self: center;
   }
   
-.page-item:first-child .page-link {
+.afPagination .page-item:first-child .page-link {
     margin-left: 0;
 }
 
-.page-item.active .page-link {
+.afPagination .page-item.active .page-link {
     z-index: 2;
     color: #fff;
 }
 
-.page-item.disabled .page-link {
+.afPagination .page-item.disabled .page-link {
     color: #636c72;
     pointer-events: none;
     cursor: not-allowed;
@@ -299,7 +296,7 @@ a.afApply:visited {
     border-color: #ddd;
 }
 
-.page-link {
+.afPagination .page-link {
     position: relative;
     display: block;
     padding: 0.5rem 0.75rem;
@@ -308,19 +305,19 @@ a.afApply:visited {
     border: 1px solid #ddd;
 }
 
-.page-link:focus, .page-link:hover {
+.afPagination .page-link:focus, .page-link:hover {
     text-decoration: none;
     background-color: #eceeef;
     border-color: #ddd;
 }
 
-.afmodal .page-link {
+.afPagination .page-link {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
 }
   
 
-#afmodalContent .pagination a {
+#afmodalContent .afPagination a {
     color: #733ACA;
     text-decoration: none;
     margin: 0;
@@ -336,7 +333,7 @@ a.afApply:visited {
     color: #733ACA;
 }
 
-@keyframes fade-in {
+@keyframes af-fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
   }
