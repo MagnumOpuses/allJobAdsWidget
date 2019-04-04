@@ -1,27 +1,36 @@
 (function(window, document) {
 
-  // Changeable variables start --------------------------------------------------- //
+  // ---------------------------- Changeable variables start ---------------------------- //
 
+  let logging = true;
   const apiUrl = "https://develop-sokannonser.dev.services.jtech.se/";
   const scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
   const scriptsUrl = scriptDomain + "/script/";
   const cssUrl = scriptDomain + "/css/";
+  const lang = 'sv'  // en or sv
 
-  // Changable variables end --------------------------------------------------- //
+  // ---------------------------- Changable variables end ---------------------------- //
 
-  let httpRequestString = "";
   let jQuery, $;
   let $pagination,
-    $afWidgetContainer,
+    afw,
     defaultOpts,
     annonsTableBody,
     afModal;
 
-  // Helper functions start ---------------------------------------------------
+  // ---------------------------- Helper functions start ---------------------------- //
+
+  function l(txt){
+    if(logging){
+      console.log(txt);
+      console.trace();
+    }
+  }
 
   function getScriptURL(){
     // IE don't support currentScript, solution = querySelector
     var script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
+    l('loaded script:' + script.src );
     return script.src
   }
 
@@ -41,6 +50,7 @@
       ) {
         done = true;
         //success();
+        l('loaded css:' + url);
         linkElement.onload = linkElement.onreadystatechange = null;
         // head.removeChild(linkElement);
       }
@@ -63,6 +73,7 @@
       ) {
         done = true;
         success();
+        l('Loaded script:' + url);
         script.onload = script.onreadystatechange = null;
         head.removeChild(script);
       }
@@ -88,20 +99,26 @@
     };
  
     request.open("GET", url, true);
-    request.setRequestHeader("api-key", "am9ic2Nhbm5lckBqdGVjaC5zZQo");
+    if(afw.dataset.source = undefined || afw.dataset.source != "af") {
+      l('All headers set for: ' + url );
+      request.setRequestHeader("api-key", "am9ic2Nhbm5lckBqdGVjaC5zZQo");
+    } else {
+      l('Af headers set for:' + url);
+      request.setRequestHeader("api-key", "apa");
+    }
     request.send();
   }
 
   function checkImageExists(imageUrl, callBack) {
     var imageData = new Image();
     imageData.onload = function() {
-    callBack(true);
+      callBack(true);
     };
     imageData.onerror = function() {
-    callBack(false);
+      callBack(false);
     };
     imageData.src = imageUrl;
-    }
+  }
 
   function i18n(template) {
     for (var
@@ -111,7 +128,7 @@
     ) out[i] = arguments[1 + info.v[i - 1]] + info.t[i];
     return out.join('');
   }
-  i18n.locale = 'sv';
+  i18n.locale = lang;
   i18n.db = {};
   
   i18n.set = locale => (tCurrent, ...rCurrent) => {
@@ -135,7 +152,6 @@
   };
   
   // .for('sv')`Hallo ${'name'}`; example with variable
-  
   i18n.set('en')`Apply`
       .for('sv')`Ansök`;
 
@@ -165,137 +181,173 @@
       main();
     }
   };
-	// Helper functions end ---------------------------------------------------
+
+  function createE(e, c = '', i = '') {
+    var r = document.createElement(e);
+    r.className = c;
+    r.innerHTML = i;
+    return r;
+  }
+
+  function ApiUrl(cont, page = 0){
+    var limit = 5;
+    var offset = 0;
+    var showexpired = false;
+    var q = '';
+    var places = '';
+
+    if(cont.dataset.limit) { limit = cont.dataset.limit; }
+    if(cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
+    if(cont.dataset.q) { q = cont.dataset.q; }
+    if(cont.dataset.places) { places = cont.dataset.places.split(',').join('&place=');}
+
+    if(page > 1 ) {
+      offset = (page * limit) - limit;
+    }
+
+    var httpRequestString = apiUrl;
+
+    if(cont.dataset.source == "af"){
+      httpRequestString += 'open/'; 
+    }
+    
+    return (
+      httpRequestString + 
+      "search?show-expired=" + showexpired +
+      "&q=" + q +
+      "&place=" + places +
+      "&offset=" + offset +
+      "&limit=" + limit
+    );  
+  }
+
+	// ---------------------------- Helper functions end ---------------------------- //
 
   var main = function($) {
+
+    if($("#afWidgetContainer").length > 0) {
+      afw = $("#afWidgetContainer")[0];
+    } else {
+      throw new Error("can't find container for widget");
+    }
+
     getStylesheet(cssUrl + "AfPbWidget.css");
     getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
 
-    var $afJobCount = $("#afJobCount");
+    if ($("#afJobCount").length > 0) {
+      var afJobCount = $("#afJobCount")[0];
 
-    if ($afJobCount.length) {
-      if ($afJobCount[0].dataset.q.length > 0 || $afJobCount[0].dataset.places.length > 0) {
-        httpRequestString =
-          apiUrl +
-          "search?show-expired=" +
-          $afJobCount[0].dataset.showexpired +
-          "&q=" +
-          $afJobCount[0].dataset.q +
-          "&place=" +
-          $afJobCount[0].dataset.places.split(',').join('&place=');
-
-        //Get 'antal_platsannonser'
-        ajax_get(httpRequestString, function(annonsdata) {
-          var total = annonsdata.total.toString().split('');
-          total.forEach(function(num) {
-            var el = document.createElement("span");
-            el.className = 'letter';
-            el.innerText = num;
-            $afJobCount[0].appendChild(el);
-
-          });
-        })
-        /*
-        .fail(function() {
-          $afJobCount.html("Missing data");
-          console.log("Couldn't get job ad from remote service");
-        });
-        */
-      } else {
-        $afJobCount.html("Check tag parameter.");
+      // counter could be empty or have own values
+      var cont = afJobCount;
+      if(
+        afJobCount.dataset.q != undefined || 
+        afJobCount.dataset.showexpired != undefined || 
+        afJobCount.dataset.places != undefined
+        ) {
+        cont = afw;          
       }
-    }
-    
-    $afWidgetContainer = $("#afWidgetContainer");
+      ajax_get(ApiUrl(cont), function(annonsdata) {
+        var total = annonsdata.total.toString().split('');
+        total.forEach(function(num) {
+          var el = createE("span", "letter", num);
+          afJobCount.appendChild(el);
 
-    if($afWidgetContainer.length) {
-      getScript(scriptsUrl + "pagination.js", function() {
-        getScript(scriptsUrl + "jquery.modal.js", function() {
-            $.modal.defaults = {
-                fadeDuration: 200,
-                closeExisting: true,
-                escapeClose: true,
-                clickClose: true,
-                closeText: "Close",
-                closeClass: "",
-                showClose: true,
-                spinnerHtml: true,
-                modalClass: "modal",
-                showSpinner: true,
-                fadeDelay: 1.0
-            };
-    
-            $("body").prepend(
-            `<div id='afModal' class='afmodal' style='display: none'>
-	            <div id="afmodalContent">
-						    <div class='afmodal-header afRow'>
-						        <h2>Här har du jobben</h2>
-						    </div>
-						    <div class='afRow' >
-						        <div id='afListContent' class="afListContent">
-						            <div class="afTable">
-						                <div class="afTableBody" id="afAnnonsTableBody" >
-						                    <!-- generated rows will go here-->
-						                </div>
-						            </div>
-						        </div>
-						        <div class="afPagination">
-						            <ul id="dynamic-total-pages-pagination"></ul>
-						        </div>
-						    </div>
-							</div>
-            </div>`
-            );
-    
-            afModal = $("#afModal");
-    
-            // build header 
-              
-            var t = document.querySelector("#afmodalContent h2");
-            var w = document.querySelector("#afWidgetContainer");
-            t.innerText = 'Jobbannonser ';
-            if(w.dataset.q) {
-              var q = document.createElement('span');
-              q.className = 'afselected';
-              q.innerText = w.dataset.q;
-              t.innerHTML = 'Annonser inom ';
-              t.appendChild(q);
-            }
-
-            if(w.dataset.places) {
-              var p = document.createElement('span');
-              p.className = 'afselected';
-              p.innerText = w.dataset.places;
-              t.innerHTML += ' att söka i ';
-              t.appendChild(p);
-
-            }
-
-            annonsTableBody = $("#afAnnonsTableBody")[0];
-            $pagination = $("#dynamic-total-pages-pagination");
-            defaultOpts = {
-              startPage: 1,
-              onPageClick: function(evt, page) {
-                  getAds(page);
-                  //Show new page from top..
-                  $("#afListContent").animate({ scrollTop: 0 });
-              }
-            };
-            $pagination.twbsPagination(defaultOpts);
-
-            afModal.on($.modal.BEFORE_OPEN, function(event, modal) {
-            getAds(1);
-            });
         });
+      })
+      /*
+      .fail(function() {
+        $afJobCount.html("Missing data");
+        console.log("Couldn't get job ad from remote service");
       });
-      //Show The Window
-      $afWidgetContainer[0].onclick = function() {
-        $("#afModal").modal();
-      };
+      */
+
     }
+    
+    getScript(scriptsUrl + "pagination.js", function() {
+      getScript(scriptsUrl + "jquery.modal.js", function() {
+          $.modal.defaults = {
+              fadeDuration: 200,
+              closeExisting: true,
+              escapeClose: true,
+              clickClose: true,
+              closeText: "Close",
+              closeClass: "",
+              showClose: true,
+              spinnerHtml: true,
+              modalClass: "modal",
+              showSpinner: true,
+              fadeDelay: 1.0
+          };
+  
+          $("body").prepend(
+          `<div id='afModal' class='afmodal' style='display: none'>
+            <div id="afmodalContent">
+              <div class='afmodal-header afRow'>
+                  <h2>Här har du jobben</h2>
+              </div>
+              <div class='afRow' >
+                  <div id='afListContent' class="afListContent">
+                      <div class="afTable">
+                          <div class="afTableBody" id="afAnnonsTableBody" >
+                              <!-- generated rows will go here-->
+                          </div>
+                      </div>
+                  </div>
+                  <div class="afPagination">
+                      <ul id="dynamic-total-pages-pagination"></ul>
+                  </div>
+              </div>
+            </div>
+          </div>`
+          );
+  
+          afModal = $("#afModal");
+  
+          // build header 
+            
+          var t = document.querySelector("#afmodalContent h2");
+          t.innerText = 'Jobbannonser ';
+          if(afw.dataset.q) {
+            var q = document.createElement('span');
+            q.className = 'afselected';
+            q.innerText = afw.dataset.q;
+            t.innerHTML = 'Annonser inom ';
+            t.appendChild(q);
+          }
 
+          if(afw.dataset.places) {
+            var p = document.createElement('span');
+            p.className = 'afselected';
+            p.innerText = afw.dataset.places;
+            t.innerHTML += ' att söka i ';
+            t.appendChild(p);
 
-    //do on click row in annons list
+          }
+
+          annonsTableBody = $("#afAnnonsTableBody")[0];
+          $pagination = $("#dynamic-total-pages-pagination");
+          defaultOpts = {
+            startPage: 1,
+            onPageClick: function(evt, page) {
+                getAds(page);
+                //Show new page from top..
+                $("#afListContent").animate({ scrollTop: 0 });
+            }
+          };
+          $pagination.twbsPagination(defaultOpts);
+
+          afModal.on($.modal.BEFORE_OPEN, function(event, modal) {
+          getAds(1);
+          });
+      });
+    });
+
+    //Show The Window
+    afw.onclick = function() {
+      $("#afModal").modal();
+    };
+
+    //on click in annons list
     $(document).on("click", ".afTableRow h3", function() {
       //Show ad
       $('.afTableCell').removeClass("opened");
@@ -308,40 +360,43 @@
 
   };
 
+  var addAdRow = function(annons) {
+    if(afw.source == "af") {
+        console.log(annons);
+        annons.header = annons.rubrik;
+        annons.employer = annons.arbetsgivare;
+        annons.employer.name = annons.employer.namn;
 
-
-  var addAdRow = function(annons, map) {
-    switch(map) {
-      case 'all':
-        allMapping(annons);
-      case 'af':
-        afMapping(annons);
+        annons.location = '';
+        if(annons.arbetsplatsadress.gatuadress) {
+          annons.location += annons.arbetsplatsadress.gatuadress;
+        }
+        if(
+          annons.arbetsplatsadress.postort && 
+          annons.location.search(annons.arbetsplatsadress.postort) < 1
+          ) {
+          if(annons.location.length > 0) {
+            annons.location += ', ';
+          }
+          annons.location += annons.arbetsplatsadress.postort;
+        }
+        annons.application = annons.ansokningsdetaljer;
+        annons.application.url = annons.application.webbadress;
+        annons.deadline = annons.sista_ansokningsdatum;
+        annons.markup = annons.beskrivning.annonstext;
     }
-  };
 
-  var afMapping = function(annons) {
-
-  }
-
-  var allMapping = function(annons) {
-    //console.log(annons);
+    l(annons);
     
-    var newRow = document.createElement("div");
-    newRow.className = "afTableRow";
+    var newRow = createE("div", "afTableRow");
     newRow.id = annons.id;    
-    var attribute = document.createAttribute("data-annonsid");
-    attribute.value = annons.id;
-    newRow.setAttributeNode(attribute);
 
-    var cell = document.createElement("div");
-    cell.className = "afTableCell";
-    var row = document.createElement("div");
-    row.className = "afRow";
+    var cell = createE("div", "afTableCell");
+    var row = createE("div", "afRow");
 
-    var adheadElement = document.createElement("h3");
-    adheadElement.innerHTML = annons.header;
-    var jobplaceElement = document.createElement("div");
-    jobplaceElement.className = "afJobplace";
+    var adheadElement = createE("h3",'',annons.header);
+    var jobplaceElement = createE("div", "afJobplace");
+
     if (annons.employer.name != undefined) {
         jobplaceElement.innerHTML = annons.employer.name + ", ";
     }
@@ -350,14 +405,12 @@
     row.appendChild(adheadElement);
 
     if (annons.application.deadline != undefined) {
-        var deadline = document.createElement("span");
-        deadline.className = "afDeadline";
         var date = new Date(annons.application.deadline).toLocaleDateString(undefined, {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
         })
-        deadline.innerText = 'Sista ansökningsdagen: ' + date;
+        var deadline = createE("span", "afDeadline", "Sista ansökningsdagen: " + date);
         row.appendChild(deadline);
     }
 
@@ -367,8 +420,7 @@
 
       checkImageExists(annons.employer.logoUrl, function(existsImage) {
         if(existsImage == true) {
-          var logoElement = document.createElement("img");
-          logoElement.className = "afListlogo";
+          var logoElement = createE("img", "afListlogo");
           logoElement.src = annons.employer.logoUrl;
           row.prepend(logoElement);
         }
@@ -378,34 +430,31 @@
       });
     }
 
-    var readMore = document.createElement("div");
-    readMore.className = "afReadMore";
+    var readMore = createE("div", "afReadMore");
+    var close = createE("a","afAdClose","Stäng");
 
-    var close = document.createElement("a");
-    close.className = 'afAdClose';
-    close.innerText = 'Stäng';
     readMore.appendChild(close);
     
-    var content = document.createElement("article");
-    content.className = "afAdText";
-    content.innerHTML = annons.markup;
+    var content = createE("article", "afAdText", annons.markup);
     readMore.appendChild(content);
 
-    if (annons.application.url || annons.sources[0].url) { 
-      if (annons.application.url) {
-        url = annons.application.url;
+    if(
+      annons.application.site.url || 
+      (annons.sources != undefined && annons.sources[0].url)
+     ) { 
+      if(annons.application.site.url) {
+        url = annons.application.site.url;
       }
-      if (annons.sources[0].url) {
+      if(annons.sources[0].url) {
         url = annons.sources[0].url;
       }      
-      var applyLink = document.createElement("a");
-      applyLink.className = "afApply";
+      var applyLink = createE("a", "afApply");
       applyLink.href = url;
       applyLink.target = '_blank';
       applyLink.text = i18n`Apply`;
       readMore.appendChild(applyLink);
     }
-    if (annons.sista_ansokningsdag) {
+    if(annons.sista_ansokningsdag) {
       left.appendChild(dateElement);
     }
     cell.appendChild(row);
@@ -415,41 +464,10 @@
 
   }
 
-  var adsURL = function(sida) {
-    var afw = $afWidgetContainer[0];
-    var limit = afw.dataset.limit;
-    var offset = 0;
-
-    if(sida > 1 ) {
-      offset = (sida * limit) - limit;
-    }
-
-    httpRequestString =
-    apiUrl +
-    "search?show-expired=" +
-    afw.dataset.showexpired +
-    "&q=" +
-    afw.dataset.q +
-    "&place=" +
-    afw.dataset.places.split(',').join('&place=');
-
-    return (
-      httpRequestString + 
-      "&offset=" + offset +
-      "&limit=" + limit
-    );
-  };
-
-  function getAds(sida, limit) {
+  function getAds(sida) {
     //TODO: Show waiting gif while fetching data
-    // afLoadingImage
-
-    ajax_get(adsURL(sida), function(annonsdata) {
-
-      var afw = $afWidgetContainer[0];
-      var limit = afw.dataset.limit;
-
-      totalPages = annonsdata.total / limit;
+    ajax_get(ApiUrl(afw,sida), function(annonsdata) {
+      totalPages = annonsdata.total / afw.dataset.limit;
       $pagination.twbsPagination("destroy");
       $pagination.twbsPagination(
         $.extend({}, defaultOpts, {
@@ -462,7 +480,7 @@
       $(".afTableBody").empty();
       var annonser = annonsdata.hits;
       annonser.forEach(function(annons, index, annonser) {
-        addAdRow(annons, 'all');            // options all/af/old 
+        addAdRow(annons);
       });
     })
     /*

@@ -244,6 +244,7 @@ a.afApply:visited {
 
 .afAdText {
     margin: 0 15px;
+    white-space: pre-line;
 }
 
 .afAdText > document {
