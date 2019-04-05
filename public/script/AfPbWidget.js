@@ -17,14 +17,42 @@
     defaultOpts,
     annonsTableBody,
     afModal;
+  
+  const ApiLimit = 2000;
 
   // ---------------------------- Helper functions start ---------------------------- //
 
-  function l(txt){
+  /**
+   * Will console log a array of function trace and value of passed variable "log"
+   * @param {*} log - can be string, array or object
+   */
+  function l(log){
     if(logging){
-      console.log(txt);
-      console.trace();
+      var stack;
+  
+      try {
+        throw new Error('');
+      }
+      catch (error) {
+        stack = error.stack || '';
+      }
+    
+      stack = stack.split('\n').map(function (line) { return line.trim(); });
+      stack.push(numOfChar('-',log.length));
+      stack.push(log);
+      stack.reverse();
+      console.log(stack.slice(0, -2));
     }
+  }
+
+  function numOfChar(char,count){
+    var str='';
+    var i = 0;
+    do {
+      i = i + 1;
+      str += char;
+    } while (i < count);
+    return str;
   }
 
   function getScriptURL(){
@@ -86,8 +114,6 @@
     request.open("GET", url, true);
     request.onreadystatechange = function() {
       if (request.readyState == 4 && request.status == 200) {
-
-        //console.log('responseText:' + request.responseText);
         try {
           var data = JSON.parse(request.responseText);
         } catch(err) {
@@ -99,12 +125,12 @@
     };
  
     request.open("GET", url, true);
-    if(afw.dataset.source = undefined || afw.dataset.source != "af") {
-      l('All headers set for: ' + url );
-      request.setRequestHeader("api-key", "am9ic2Nhbm5lckBqdGVjaC5zZQo");
-    } else {
-      l('Af headers set for:' + url);
+    if(url.search('jtech.se/open/search') > 1) {
+      l('AfJobs headers set for:' + url);
       request.setRequestHeader("api-key", "apa");
+    } else {
+      l('AllJobs headers set for: ' + url );
+      request.setRequestHeader("api-key", "am9ic2Nhbm5lckBqdGVjaC5zZQo");
     }
     request.send();
   }
@@ -361,8 +387,7 @@
   };
 
   var addAdRow = function(annons) {
-    if(afw.source == "af") {
-        console.log(annons);
+    if(afw.dataset.source == "af") {
         annons.header = annons.rubrik;
         annons.employer = annons.arbetsgivare;
         annons.employer.name = annons.employer.namn;
@@ -381,7 +406,8 @@
           annons.location += annons.arbetsplatsadress.postort;
         }
         annons.application = annons.ansokningsdetaljer;
-        annons.application.url = annons.application.webbadress;
+        annons.application.site = {};
+        annons.application.site.url = annons.application.webbadress;
         annons.deadline = annons.sista_ansokningsdatum;
         annons.markup = annons.beskrivning.annonstext;
     }
@@ -438,16 +464,14 @@
     var content = createE("article", "afAdText", annons.markup);
     readMore.appendChild(content);
 
-    if(
-      annons.application.site.url || 
-      (annons.sources != undefined && annons.sources[0].url)
-     ) { 
-      if(annons.application.site.url) {
-        url = annons.application.site.url;
-      }
-      if(annons.sources[0].url) {
-        url = annons.sources[0].url;
-      }      
+    var url = '';
+    if(annons.application.site.url) {
+      url = annons.application.site.url;
+    } else if(annons.sources != undefined && annons.sources[0].url) {
+      url = annons.sources[0].url;
+    }
+    
+    if(url.length > 1) {
       var applyLink = createE("a", "afApply");
       applyLink.href = url;
       applyLink.target = '_blank';
@@ -467,6 +491,9 @@
   function getAds(sida) {
     //TODO: Show waiting gif while fetching data
     ajax_get(ApiUrl(afw,sida), function(annonsdata) {
+      if(annonsdata.total > ApiLimit){
+        annonsdata.total = ApiLimit;
+      }
       totalPages = annonsdata.total / afw.dataset.limit;
       $pagination.twbsPagination("destroy");
       $pagination.twbsPagination(
