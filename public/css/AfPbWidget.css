@@ -106,12 +106,6 @@
     font-weight: 600;
 }
 
-@media screen and (min-width: 768px) {
-    .afTableCell h3 {
-        max-width: calc(100% - 120px); 
-    }
-}
-
 .blocker {
     position: fixed;
     top: 0; right: 0; bottom: 0; left: 0;

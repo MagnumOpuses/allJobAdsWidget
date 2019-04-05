@@ -266,12 +266,13 @@
       // counter could be empty or have own values
       var cont = afJobCount;
       if(
-        afJobCount.dataset.q != undefined || 
-        afJobCount.dataset.showexpired != undefined || 
-        afJobCount.dataset.places != undefined
+        afJobCount.dataset.q == undefined && 
+        afJobCount.dataset.showexpired == undefined && 
+        afJobCount.dataset.places == undefined
         ) {
         cont = afw;          
       }
+
       ajax_get(ApiUrl(cont), function(annonsdata) {
         var total = annonsdata.total.toString().split('');
         total.forEach(function(num) {
@@ -387,6 +388,7 @@
   };
 
   var addAdRow = function(annons) {
+    // move af data to be work as alljobs
     if(afw.dataset.source == "af") {
         annons.header = annons.rubrik;
         annons.employer = annons.arbetsgivare;
