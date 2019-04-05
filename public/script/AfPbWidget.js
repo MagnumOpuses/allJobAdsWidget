@@ -247,6 +247,10 @@
     );  
   }
 
+  function toHttps(url) {
+    return url.replace('http:', 'https:');
+  }
+
 	// ---------------------------- Helper functions end ---------------------------- //
 
   var main = function($) {
@@ -410,7 +414,7 @@
         annons.application = annons.ansokningsdetaljer;
         annons.application.site = {};
         annons.application.site.url = annons.application.webbadress;
-        annons.deadline = annons.sista_ansokningsdatum;
+        annons.application.deadline = annons.sista_ansokningsdatum;
         annons.markup = annons.beskrivning.annonstext;
     }
 
@@ -445,11 +449,11 @@
     row.appendChild(jobplaceElement);
 
     if (annons.employer.logoUrl) {
-
-      checkImageExists(annons.employer.logoUrl, function(existsImage) {
+      var logoUrl = toHttps(annons.employer.logoUrl);
+      checkImageExists(logoUrl, function(existsImage) {
         if(existsImage == true) {
           var logoElement = createE("img", "afListlogo");
-          logoElement.src = annons.employer.logoUrl;
+          logoElement.src = logoUrl;
           row.prepend(logoElement);
         }
         else {
@@ -493,6 +497,7 @@
   function getAds(sida) {
     //TODO: Show waiting gif while fetching data
     ajax_get(ApiUrl(afw,sida), function(annonsdata) {
+      l(annonsdata);
       if(annonsdata.total > ApiLimit){
         annonsdata.total = ApiLimit;
       }
