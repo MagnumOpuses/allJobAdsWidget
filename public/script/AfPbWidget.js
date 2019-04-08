@@ -26,7 +26,8 @@
    * Will console log a array of function trace and value of passed variable "log"
    * @param {*} log - can be string, array or object
    */
-  function l(log) {
+  function l(log) 
+  {
     if(logging){
       var stack;
   
@@ -45,7 +46,8 @@
     }
   }
   
-  function numOfChar(char,count) {
+  function numOfChar(char,count) 
+  {
     var str='';
     var i = 0;
     do {
@@ -55,14 +57,16 @@
     return str;
   }
 
-  function getScriptURL() {
+  function getScriptURL() 
+  {
     // IE don't support currentScript, solution = querySelector
     var script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
     l('loaded script:' + script.src );
     return script.src
   }
 
-  function getStylesheet(url) {
+  function getStylesheet(url) 
+  {
     var linkElement = document.createElement("link");
     linkElement.href = url;
     linkElement.rel = "stylesheet";
@@ -86,7 +90,8 @@
     head.appendChild(linkElement);
   }
 
-  function getScript(url, success) {
+  function getScript(url, success) 
+  {
     var script = document.createElement("script");
     script.src = url;
     var head = document.getElementsByTagName("head")[0],
@@ -109,7 +114,8 @@
     head.appendChild(script);
   }
 
-  function ajax_get(url, callback) {
+  function ajax_get(url, callback) 
+  {
     var request = new XMLHttpRequest();
     request.open("GET", url, true);
     request.onreadystatechange = function() {
@@ -135,7 +141,8 @@
     request.send();
   }
 
-  function checkImageExists(imageUrl, callBack) {
+  function checkImageExists(imageUrl, callBack) 
+  {
     var imageData = new Image();
     imageData.onload = function() {
       callBack(true);
@@ -146,7 +153,8 @@
     imageData.src = imageUrl;
   }
 
-  function i18n(template) {
+  function i18n(template) 
+  {
     for (var
       info = i18n.db[i18n.locale][template.join('\x01')],
       out = [info.t[0]],
@@ -182,11 +190,12 @@
       .for('sv')`Ansök`;
 
 
-  window.onload = function() {
+  window.onload = function() 
+  {
     //Load jQuery version 3.2.0 if it isn't already loaded.
-    if (typeof jQuery == "undefined" || window.jQuery.fn.jquery !== "3.2.0") {
+    if (typeof jQuery == "undefined" || window.jQuery.fn.jquery !== "3.3.1") {
       getScript(
-        "https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.js",
+        "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js",
         function() {
           if (typeof window.jQuery == "undefined") {
             if (window.console)
@@ -208,14 +217,16 @@
     }
   };
 
-  function createE(e, c = '', i = '') {
+  function createE(e, c = '', i = '') 
+  {
     var r = document.createElement(e);
     r.className = c;
     r.innerHTML = i;
     return r;
   }
 
-  function ApiUrl(cont, page = 0){
+  function ApiUrl(cont, page = 0)
+  {
     // defaults 
     var limit = 5;
     var offset = 0;
@@ -249,11 +260,13 @@
     );  
   }
 
-  function toHttps(url) {
+  function toHttps(url) 
+  {
     return url.replace('http:', 'https:');
   }
 
-  function addAdListener(query, call) {
+  function addAdListener(query, call) 
+  {
     [].forEach.call( document.querySelectorAll( query ), function ( e ) {
       e.addEventListener( 'click', function () {
         fnCall(call, e);
@@ -268,7 +281,8 @@
     else console.error(`${fn} is Not a function!`);
   }
 
-  function addClass(e, c) {
+  function addClass(e, c) 
+  {
     if (e.classList) { 
       e.classList.add(c);
     } else {
@@ -331,87 +345,79 @@
     }
     
     getScript(scriptsUrl + "pagination.js", function() {
-      getScript(scriptsUrl + "jquery.modal.js", function() {
-          $.modal.defaults = {
-              fadeDuration: 200,
-              closeExisting: true,
-              escapeClose: true,
-              clickClose: true,
-              closeText: "Close",
-              closeClass: "",
-              showClose: true,
-              spinnerHtml: true,
-              modalClass: "modal",
-              showSpinner: true,
-              fadeDelay: 1.0
-          };
-  
-          $("body").prepend(
-          `<div id='afModal' class='afmodal' style='display: none'>
-            <div id="afmodalContent">
-              <div class='afmodal-header afRow'>
-                  <h2>Här har du jobben</h2>
-              </div>
-              <div class='afRow' >
-                  <div id='afListContent' class="afListContent">
-                      <div class="afTable">
-                          <div id="afAnnonsTableBody" >
-                              <!-- generated rows will go here-->
-                          </div>
-                      </div>
-                  </div>
-                  <div class="afPagination">
-                      <ul id="dynamic-total-pages-pagination"></ul>
-                  </div>
-              </div>
+      $("body").prepend(
+      `<div id="afModalWrapper">
+        <div id='afModal' class='afmodal' style='display: none'>
+          <a href="#close-modal" class="close-modal ">Close</a>
+          <div id="afmodalContent">
+            <div class='afmodal-header afRow'>
+                <h2>Här har du jobben</h2>
             </div>
-          </div>`
-          );
-  
-          afModal = $("#afModal");
-  
-          // build header 
-            
-          var t = document.querySelector("#afmodalContent h2");
-          t.innerText = 'Jobbannonser ';
-          if(afw.dataset.q) {
-            var q = document.createElement('span');
-            q.className = 'afselected';
-            q.innerText = afw.dataset.q;
-            t.innerHTML = 'Annonser inom ';
-            t.appendChild(q);
-          }
+            <div class='afRow' >
+                <div id='afListContent' class="afListContent">
+                    <div class="afTable">
+                        <div id="afAnnonsTableBody" >
+                            <!-- generated rows will go here-->
+                        </div>
+                    </div>
+                </div>
+                <div class="afPagination">
+                    <ul id="dynamic-total-pages-pagination"></ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>`
+      );
 
-          if(afw.dataset.places) {
-            var p = document.createElement('span');
-            p.className = 'afselected';
-            p.innerText = afw.dataset.places;
-            t.innerHTML += ' att söka i ';
-            t.appendChild(p);
+      afModal = $("#afModal");
 
-          }
+      // build header 
+        
+      var t = document.querySelector("#afmodalContent h2");
+      t.innerText = 'Jobbannonser ';
+      if(afw.dataset.q) {
+        var q = document.createElement('span');
+        q.className = 'afselected';
+        q.innerText = afw.dataset.q;
+        t.innerHTML = 'Annonser inom ';
+        t.appendChild(q);
+      }
 
-          annonsTableBody = $("#afAnnonsTableBody")[0];
-          $pagination = $("#dynamic-total-pages-pagination");
-          defaultOpts = {
-            startPage: 1,
-            onPageClick: function(evt, page) {
-                getAds(page);
-                //Show new page from top..
-                $("#afListContent").animate({ scrollTop: 0 });
-            }
-          };
-          $pagination.twbsPagination(defaultOpts);
+      if(afw.dataset.places) {
+        var p = document.createElement('span');
+        p.className = 'afselected';
+        p.innerText = afw.dataset.places;
+        t.innerHTML += ' att söka i ';
+        t.appendChild(p);
 
-          afModal.on($.modal.BEFORE_OPEN, function(event, modal) {
-          getAds(1);
-          });
-      });
+      }
+
+      annonsTableBody = $("#afAnnonsTableBody")[0];
+      $pagination = $("#dynamic-total-pages-pagination");
+      defaultOpts = {
+        startPage: 1,
+        onPageClick: function(evt, page) {
+            getAds(page);
+            //Show new page from top..
+            $("#afListContent").animate({ scrollTop: 0 });
+        }
+      };
+      $pagination.twbsPagination(defaultOpts);
+
     });
 
-    //Show The Window
+    //Show The Modal
     afw.onclick = function() {
-      $("#afModal").modal();
+      
+      $("#afModalWrapper").show().addClass('blocker');
+      $("#afModal").show();
+      // modal closer
+      addAdListener(".close-modal", function() {
+        $("#afModalWrapper").hide().removeClass('blocker');
+        $("#afModal").hide();
+      });
+
     };
 
 
