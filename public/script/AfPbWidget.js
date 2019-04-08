@@ -15,8 +15,7 @@
   let $pagination,
     afw,
     defaultOpts,
-    annonsTableBody,
-    afModal;
+    annonsTableBody;
   
   const ApiLimit = 2000;
 
@@ -199,7 +198,7 @@
         function() {
           if (typeof window.jQuery == "undefined") {
             if (window.console)
-              console.log("Sorry, but jQuery wasn't able to load");
+              throw new Error("Sorry, but jQuery wasn't able to load");
           } else {
             $ = jQuery = window.jQuery.noConflict();
             if (window.console)
@@ -305,17 +304,16 @@
 
   var main = function($) {
 
-    if($("#afWidgetContainer").length > 0) {
-      afw = $("#afWidgetContainer")[0];
-    } else {
+    afw = document.getElementById("afWidgetContainer");
+    if(afw == undefined) {
       throw new Error("can't find container for widget");
     }
 
     getStylesheet(cssUrl + "AfPbWidget.css");
     getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
 
-    if ($("#afJobCount").length > 0) {
-      var afJobCount = $("#afJobCount")[0];
+    var afJobCount = document.getElementById("afJobCount");
+    if (afJobCount != undefined) {
 
       // counter could be empty or have own values
       var cont = afJobCount;
@@ -343,56 +341,53 @@
       */
 
     }
-    
-    getScript(scriptsUrl + "pagination.js", function() {
-      $("body").prepend(
-      `<div id="afModalWrapper">
-        <div id='afModal' class='afmodal' style='display: none'>
-          <a href="#close-modal" class="close-modal ">Close</a>
-          <div id="afmodalContent">
-            <div class='afmodal-header afRow'>
-                <h2>Här har du jobben</h2>
-            </div>
-            <div class='afRow' >
-                <div id='afListContent' class="afListContent">
-                    <div class="afTable">
-                        <div id="afAnnonsTableBody" >
-                            <!-- generated rows will go here-->
-                        </div>
-                    </div>
-                </div>
-                <div class="afPagination">
-                    <ul id="dynamic-total-pages-pagination"></ul>
-                </div>
-            </div>
+
+    var wrapper = createE("div");
+    wrapper.id = "afModalWrapper";
+    wrapper.innerHTML = `<div id='afModal' class='afmodal' style='display: none'>
+        <a href="#close-modal" class="close-modal ">Close</a>
+        <div id="afmodalContent">
+          <div class='afmodal-header afRow'>
+              <h2>Här har du jobben</h2>
+          </div>
+          <div class='afRow' >
+              <div id='afListContent' class="afListContent">
+                  <div class="afTable">
+                      <div id="afAnnonsTableBody" >
+                          <!-- generated rows will go here-->
+                      </div>
+                  </div>
+              </div>
+              <div class="afPagination">
+                  <ul id="dynamic-total-pages-pagination"></ul>
+              </div>
           </div>
         </div>
-      </div>`
-      );
+      </div>`;
+    document.body.appendChild(wrapper);
 
-      afModal = $("#afModal");
+    // build header 
+  
+    var t = document.querySelector("#afmodalContent h2");
+    t.innerText = 'Jobbannonser ';
+    if(afw.dataset.q) {
+      var q = document.createElement('span');
+      q.className = 'afselected';
+      q.innerText = afw.dataset.q;
+      t.innerHTML = 'Annonser inom ';
+      t.appendChild(q);
+    }
 
-      // build header 
-        
-      var t = document.querySelector("#afmodalContent h2");
-      t.innerText = 'Jobbannonser ';
-      if(afw.dataset.q) {
-        var q = document.createElement('span');
-        q.className = 'afselected';
-        q.innerText = afw.dataset.q;
-        t.innerHTML = 'Annonser inom ';
-        t.appendChild(q);
-      }
+    if(afw.dataset.places) {
+      var p = document.createElement('span');
+      p.className = 'afselected';
+      p.innerText = afw.dataset.places;
+      t.innerHTML += ' att söka i ';
+      t.appendChild(p);
 
-      if(afw.dataset.places) {
-        var p = document.createElement('span');
-        p.className = 'afselected';
-        p.innerText = afw.dataset.places;
-        t.innerHTML += ' att söka i ';
-        t.appendChild(p);
+    }
 
-      }
-
+    getScript(scriptsUrl + "pagination.js", function() {
       annonsTableBody = $("#afAnnonsTableBody")[0];
       $pagination = $("#dynamic-total-pages-pagination");
       defaultOpts = {
@@ -407,23 +402,24 @@
 
     });
 
-    //Show The Modal
-    afw.onclick = function() {
-      
-      $("#afModalWrapper").show().addClass('blocker');
-      $("#afModal").show();
-      // modal closer
-      addAdListener(".close-modal", function() {
-        $("#afModalWrapper").hide().removeClass('blocker');
-        $("#afModal").hide();
-      });
+    afw.onclick = function() 
+    {
+      addClass(wrapper,"blocker");
+      wrapper.firstChild.setAttribute("style", "display: inline-block");
 
     };
 
+    // close modal. 
+    addAdListener(".close-modal", function() 
+    {
+      removeClass(wrapper, "blocker");
+      wrapper.firstChild.setAttribute("style", "display: none");
+    });
 
   };
 
-  var addAdRow = function(annons) {
+  var addAdRow = function(annons) 
+  {
     // move af data to be work as alljobs
     if(afw.dataset.source == "af") {
         annons.header = annons.rubrik;
@@ -461,14 +457,16 @@
     var adheadElement = createE("h3",'',annons.header);
     var jobplaceElement = createE("div", "afJobplace");
 
-    if (annons.employer.name != undefined) {
+    if (annons.employer.name != undefined) 
+    {
         jobplaceElement.innerHTML = annons.employer.name + ", ";
     }
     jobplaceElement.innerHTML += annons.location;
 
     row.appendChild(adheadElement);
 
-    if (annons.application.deadline != undefined) {
+    if (annons.application.deadline != undefined) 
+    {
         var date = new Date(annons.application.deadline).toLocaleDateString(undefined, {
             day: '2-digit',
             month: '2-digit',
@@ -480,15 +478,19 @@
 
     row.appendChild(jobplaceElement);
 
-    if (annons.employer.logoUrl) {
+    if (annons.employer.logoUrl) 
+    {
       var logoUrl = toHttps(annons.employer.logoUrl);
-      checkImageExists(logoUrl, function(existsImage) {
-        if(existsImage == true) {
+      checkImageExists(logoUrl, function(existsImage) 
+      {
+        if(existsImage == true) 
+        {
           var logoElement = createE("img", "afListlogo");
           logoElement.src = logoUrl;
           row.prepend(logoElement);
         }
-        else {
+        else 
+        {
           // image not exist
         }
       });
@@ -503,20 +505,25 @@
     readMore.appendChild(content);
 
     var url = '';
-    if(annons.application.site.url) {
+    if(annons.application.site.url) 
+    {
       url = annons.application.site.url;
-    } else if(annons.sources != undefined && annons.sources[0].url) {
+    } 
+    else if(annons.sources != undefined && annons.sources[0].url) 
+    {
       url = annons.sources[0].url;
     }
     
-    if(url.length > 1) {
+    if(url.length > 1) 
+    {
       var applyLink = createE("a", "afApply");
       applyLink.href = url;
       applyLink.target = '_blank';
       applyLink.text = i18n`Apply`;
       readMore.appendChild(applyLink);
     }
-    if(annons.sista_ansokningsdag) {
+    if(annons.sista_ansokningsdag) 
+    {
       left.appendChild(dateElement);
     }
     cell.appendChild(row);
@@ -526,11 +533,14 @@
 
   }
 
-  function getAds(sida) {
+  function getAds(sida) 
+  {
     //TODO: Show waiting gif while fetching data
-    ajax_get(ApiUrl(afw,sida), function(annonsdata) {
+    ajax_get(ApiUrl(afw,sida), function(annonsdata) 
+    {
       l(annonsdata);
-      if(annonsdata.total > ApiLimit){
+      if(annonsdata.total > ApiLimit)
+      {
         annonsdata.total = ApiLimit;
       }
       totalPages = annonsdata.total / afw.dataset.limit;
@@ -547,20 +557,25 @@
       afTable.innerHTML= '';
 
       var annonser = annonsdata.hits;
-      annonser.forEach(function(annons) {
+      annonser.forEach(function(annons) 
+      {
         addAdRow(annons);
       });
       // ad opener
-      addAdListener(".afTableRow h3", function(e) {
-        document.querySelectorAll(".afTableCell").forEach(function (e) {
+      addAdListener(".afTableRow h3", function(e) 
+      {
+        document.querySelectorAll(".afTableCell").forEach(function (e) 
+        {
           removeClass(e, "opened");
         });
         e.parentNode.parentNode.className += " opened";   
       });
 
       // ad closer
-      addAdListener(".afAdClose", function() {
-        document.querySelectorAll(".afTableCell").forEach(function (e) {
+      addAdListener(".afAdClose", function() 
+      {
+        document.querySelectorAll(".afTableCell").forEach(function (e) 
+        {
           removeClass(e, "opened");
         });
       });
