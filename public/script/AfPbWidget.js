@@ -26,7 +26,7 @@
    * Will console log a array of function trace and value of passed variable "log"
    * @param {*} log - can be string, array or object
    */
-  function l(log){
+  function l(log) {
     if(logging){
       var stack;
   
@@ -44,18 +44,18 @@
       console.log(stack.slice(0, -2));
     }
   }
-
-  function numOfChar(char,count){
+  
+  function numOfChar(char,count) {
     var str='';
     var i = 0;
     do {
-      i = i + 1;
+      i++;
       str += char;
     } while (i < count);
     return str;
   }
 
-  function getScriptURL(){
+  function getScriptURL() {
     // IE don't support currentScript, solution = querySelector
     var script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
     l('loaded script:' + script.src );
@@ -216,12 +216,14 @@
   }
 
   function ApiUrl(cont, page = 0){
+    // defaults 
     var limit = 5;
     var offset = 0;
     var showexpired = false;
     var q = '';
     var places = '';
 
+    // fetch from container
     if(cont.dataset.limit) { limit = cont.dataset.limit; }
     if(cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
     if(cont.dataset.q) { q = cont.dataset.q; }
@@ -249,6 +251,40 @@
 
   function toHttps(url) {
     return url.replace('http:', 'https:');
+  }
+
+  function addAdListener(query, call) {
+    [].forEach.call( document.querySelectorAll( query ), function ( e ) {
+      e.addEventListener( 'click', function () {
+        fnCall(call, e);
+      }, false );
+    });
+  }
+
+  function fnCall(fn, ...args)
+  {
+    let func = (typeof fn =="string")?window[fn]:fn;
+    if (typeof func == "function") func(...args)
+    else console.error(`${fn} is Not a function!`);
+  }
+
+  function addClass(e, c) {
+    if (e.classList) { 
+      e.classList.add(c);
+    } else {
+      arr = e.className.split(" ");
+      if (arr.indexOf(c) == -1) {
+        e.className += " " + c;
+      }
+    }    
+  }
+
+  function removeClass(e,c) {
+    if (e.classList) { 
+      e.classList.remove(c);
+    } else {
+      e.className = e.className.replace(/\b"+ c +"\b/g, "");
+    }
   }
 
 	// ---------------------------- Helper functions end ---------------------------- //
@@ -319,7 +355,7 @@
               <div class='afRow' >
                   <div id='afListContent' class="afListContent">
                       <div class="afTable">
-                          <div class="afTableBody" id="afAnnonsTableBody" >
+                          <div id="afAnnonsTableBody" >
                               <!-- generated rows will go here-->
                           </div>
                       </div>
@@ -378,16 +414,6 @@
       $("#afModal").modal();
     };
 
-    //on click in annons list
-    $(document).on("click", ".afTableRow h3", function() {
-      //Show ad
-      $('.afTableCell').removeClass("opened");
-      $(this).parent().parent().addClass("opened");
-    });
-
-    $(document).on("click", ".afAdClose", function() {
-      $('.afTableCell').removeClass("opened");
-    });  
 
   };
 
@@ -511,11 +537,28 @@
         })
       );
 
-      $(".afTableBody").empty();
+      var afTable = document.getElementById("afAnnonsTableBody");
+      afTable.innerHTML= '';
+
       var annonser = annonsdata.hits;
-      annonser.forEach(function(annons, index, annonser) {
+      annonser.forEach(function(annons) {
         addAdRow(annons);
       });
+      // ad opener
+      addAdListener(".afTableRow h3", function(e) {
+        document.querySelectorAll(".afTableCell").forEach(function (e) {
+          removeClass(e, "opened");
+        });
+        e.parentNode.parentNode.className += " opened";   
+      });
+
+      // ad closer
+      addAdListener(".afAdClose", function() {
+        document.querySelectorAll(".afTableCell").forEach(function (e) {
+          removeClass(e, "opened");
+        });
+      });
+      
     })
     /*
     .fail(function() {

@@ -95,7 +95,7 @@
     min-height: 80px;
     position: relative;
 }
-.afTableBody {
+#afAnnonsTableBody {
     display: table-row-group;
 }
 
