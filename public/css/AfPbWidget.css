@@ -266,66 +266,27 @@ a.afApply:visited {
     font-size: 80%;
 }
 
-.afPagination, .afPagination > * {
+.afPaginationWrapper, .afPaginationWrapper * {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    margin: 10px auto;
+    margin: 0px auto;
     align-self: center;
   }
-  
-.afPagination .page-item:first-child .page-link {
-    margin-left: 0;
+.afPaginationWrapper {
+    margin: 10px auto;
 }
-
-.afPagination .page-item.active .page-link {
-    z-index: 2;
-    color: #fff;
-}
-
-.afPagination .page-item.disabled .page-link {
-    color: #636c72;
-    pointer-events: none;
-    cursor: not-allowed;
-    background-color: #fff;
-    border-color: #ddd;
-}
-
-.afPagination .page-link {
-    position: relative;
-    display: block;
-    padding: 0.5rem 0.75rem;
-    margin-left: -1px;
-    line-height: 1.25;
-    border: 1px solid #ddd;
-}
-
-.afPagination .page-link:focus, .page-link:hover {
-    text-decoration: none;
-    background-color: #eceeef;
-    border-color: #ddd;
-}
-
-.afPagination .page-link {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-}
-  
-
 #afmodalContent .afPagination a {
+    cursor: pointer;
     color: #733ACA;
-    text-decoration: none;
-    margin: 0;
 }
 
-#afmodalContent .page-item.active .page-link {
-    background-color: #733ACA;
-    border-color: #5009BD;
-    color: #E8DFF6;
+.afPagination .pagNumber {
+    margin: 5px 8px;
+    display: block;
 }
-
-.afselected {
+.afSelected {
     color: #733ACA;
 }
 
