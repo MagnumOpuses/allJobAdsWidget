@@ -10,6 +10,12 @@ The api endpoint can be altered with no notice and effect the widget function.<B
 Do you want to help? Get involved!
 see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
 
+# Purpose #
+
+You can put this Widget where you want on you own website by adding a specific element.
+This widget is fetching all jobs from AF(Arbetsförmedlingen / Swedish employment agency) and will display them with a pagination. You can predefine areas and occupations and filter the results accordingly. 
+
+
 ## Live Demo / Example
 
 ![alt text](https://widgets.jobtechdev.se/alljobads/example/demo.jpg)
