@@ -293,9 +293,16 @@ var pagination = require('pagination');
         ) {
         cont = afw;          
       }
-
       ajax_get(ApiUrl(cont), function(annonsdata) {
-        var total = annonsdata.total.toString().split('');
+        var total = '';
+        if(annonsdata.total != undefined) 
+        {
+          total = annonsdata.total.toString().split('');
+        } 
+        else 
+        {
+          total = annonsdata.antal_platsannonser.toString().split('');
+        }
         total.forEach(function(num) {
           var el = createE("span", "letter", num);
           afJobCount.appendChild(el);
@@ -494,10 +501,20 @@ var pagination = require('pagination');
     ajax_get(ApiUrl(afw,sida), function(annonsdata) 
     {
       l(annonsdata);
+      var total = '';
+      if(annonsdata.total != undefined) 
+      {
+        total = annonsdata.total.toString().split('');
+      } 
+      else 
+      {
+        total = annonsdata.antal_platsannonser.toString().split('');
+      }
+
 
       if(annonsdata.total > ApiLimit)
       {
-        annonsdata.total = ApiLimit;
+        total = ApiLimit;
       }
 
       if(pag1 == undefined)
@@ -505,7 +522,7 @@ var pagination = require('pagination');
         pag1 = new pagination(document.getElementsByClassName('afPagination')[0],
           {
             currentPage: 1,	                  	// number
-            totalItems: annonsdata.total,       // number
+            totalItems: total,                  // number
             itemsPerPage: afw.dataset.limit,    // number
             step: 2,			                      // number
             onInit: getAds	                    // function
@@ -517,7 +534,15 @@ var pagination = require('pagination');
       var annonsTableBody = document.getElementById("afAnnonsTableBody");
       annonsTableBody.innerHTML= '';
 
-      var annonser = annonsdata.hits;
+      var annonser = {};
+      if(annonsdata.hits)
+      {
+        annonser = annonsdata.hits;
+      }
+      else 
+      {
+        annonser = annonsdata.platsannonser;
+      }
       annonser.forEach(function(annons) 
       {
         annonsTableBody.appendChild(addAdRow(annons));
