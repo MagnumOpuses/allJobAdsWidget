@@ -4,7 +4,7 @@ var pagination = require('pagination');
 
   // ---------------------------- Changeable variables start ---------------------------- //
 
-  let logging = true;
+  let logging = false;
   const apiUrl = "https://jobs.dev.services.jtech.se/";
   const scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
   const scriptsUrl = scriptDomain + "/script/";
