@@ -236,6 +236,7 @@ var pagination = require('pagination');
   function addAdListener(query, call) 
   {
     [].forEach.call( document.querySelectorAll( query ), function ( e ) {
+      if(e.preventDefault != undefined) { e.preventDefault() };
       e.addEventListener( 'click', function () {
         fnCall(call, e);
       }, false );
