@@ -37,7 +37,6 @@
     text-align: center;
     padding: 20px 0;
     font-size: 1.5em;
-    text-shadow: 0 0 10px #fff;
 }
 
 .afAdClose {
@@ -150,6 +149,11 @@
 }
 
 @media screen and (min-width: 768px) {
+	#afModal {
+		width: 95vw;
+	}
+}
+@media screen and (min-width: 980px) {
 	#afModal {
 		width: 80vw;
 	}
@@ -288,6 +292,9 @@ a.afApply:visited {
 }
 .afSelected {
     color: #733ACA;
+}
+.afSelected:last-child {
+    display: block;
 }
 
 @keyframes af-fade-in {

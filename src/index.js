@@ -4,7 +4,7 @@ var pagination = require('pagination');
 
   // ---------------------------- Changeable variables start ---------------------------- //
 
-  let logging = false;
+  let logging = true;
   const apiUrl = "https://jobs.dev.services.jtech.se/";
   const scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
   const scriptsUrl = scriptDomain + "/script/";
@@ -214,7 +214,7 @@ var pagination = require('pagination');
 
     var httpRequestString = apiUrl;
 
-    if(cont.dataset.source == "af"){
+    if(cont.dataset.source != "all"){
       httpRequestString += 'open/'; 
     }
     
@@ -348,15 +348,15 @@ var pagination = require('pagination');
     t.innerText = 'Jobbannonser ';
     if(afw.dataset.q) {
       var q = document.createElement('span');
-      q.className = 'afselected';
+      q.className = 'afSelected';
       q.innerText = afw.dataset.q;
-      t.innerHTML = 'Annonser inom ';
+      t.innerHTML = 'Annonser för ';
       t.appendChild(q);
     }
 
     if(afw.dataset.places) {
       var p = document.createElement('span');
-      p.className = 'afselected';
+      p.className = 'afSelected';
       p.innerText = afw.dataset.places;
       t.innerHTML += ' att söka i ';
       t.appendChild(p);
@@ -382,49 +382,52 @@ var pagination = require('pagination');
   var addAdRow = function(annons) 
   {
     // move af data to be work as alljobs
-    if(afw.dataset.source == "af") {
-        annons.header = annons.rubrik;
-        annons.employer = annons.arbetsgivare;
-        annons.employer.name = annons.employer.namn;
-
+    if(afw.dataset.source != "all") {
+        annons.header = annons.annons.annonsrubrik;
+        annons.employer = {
+          'name': annons.arbetsplats.arbetsplatsnamn
+        };
         annons.location = '';
-        if(annons.arbetsplatsadress.gatuadress) {
-          annons.location += annons.arbetsplatsadress.gatuadress;
+        if(annons.arbetsplats.postadress) {
+          annons.location += annons.arbetsplats.postadress;
         }
         if(
-          annons.arbetsplatsadress.postort && 
-          annons.location.search(annons.arbetsplatsadress.postort) < 1
+          annons.arbetsplats.postort && 
+          annons.location.search(annons.arbetsplats.postort) < 1
           ) {
           if(annons.location.length > 0) {
             annons.location += ', ';
           }
-          annons.location += annons.arbetsplatsadress.postort;
+          annons.location += annons.arbetsplats.postort;
         }
-        annons.application = annons.ansokningsdetaljer;
-        annons.application.site = {};
-        annons.application.site.url = annons.application.webbadress;
-        annons.application.deadline = annons.sista_ansokningsdatum;
-        annons.markup = annons.beskrivning.annonstext;
+        annons.application = {
+          'site': {
+            'url': annons.annons.annons_url
+          },
+          'deadline': annons.ansokan.sista_ansokningsdag
+        };
+
+        annons.markup = annons.annons.annonstext;
     }
 
     l(annons);
     
+    // wrapper
     var newRow = createE("div", "afTableRow");
     newRow.id = annons.id;    
 
     var cell = createE("div", "afTableCell");
     var row = createE("div", "afRow");
 
+    // header
     var adheadElement = createE("h3",'',annons.header);
     var jobplaceElement = createE("div", "afJobplace");
-
+    // below header
     if (annons.employer.name != undefined) 
     {
         jobplaceElement.innerHTML = annons.employer.name + ", ";
     }
-
     jobplaceElement.innerHTML += annons.location;
-
     row.appendChild(adheadElement);
 
     if (annons.application.deadline != undefined) 
@@ -437,7 +440,6 @@ var pagination = require('pagination');
         var deadline = createE("span", "afDeadline", "Sista ansökningsdagen: " + date);
         row.appendChild(deadline);
     }
-
     row.appendChild(jobplaceElement);
 
     if (annons.employer.logoUrl) 
@@ -457,12 +459,10 @@ var pagination = require('pagination');
         }
       });
     }
-
+    // more info
     var readMore = createE("div", "afReadMore");
     var close = createE("a","afAdClose","Stäng");
-
     readMore.appendChild(close);
-    
     var content = createE("article", "afAdText", annons.markup);
     readMore.appendChild(content);
 
@@ -504,15 +504,15 @@ var pagination = require('pagination');
       var total = '';
       if(annonsdata.total != undefined) 
       {
-        total = annonsdata.total.toString().split('');
+        total = annonsdata.total;
       } 
       else 
       {
-        total = annonsdata.antal_platsannonser.toString().split('');
+        total = annonsdata.antal_platsannonser;
       }
 
 
-      if(annonsdata.total > ApiLimit)
+      if(total > ApiLimit)
       {
         total = ApiLimit;
       }
