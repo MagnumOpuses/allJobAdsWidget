@@ -24,13 +24,16 @@ var pagination = require('pagination');
    */
   function l(log) 
   {
-    if(logging){
+    if(logging)
+    {
       var stack;
   
-      try {
+      try 
+      {
         throw new Error('');
       }
-      catch (error) {
+      catch (error) 
+      {
         stack = error.stack || '';
       }
     
@@ -69,7 +72,8 @@ var pagination = require('pagination');
     var head = document.getElementsByTagName("head")[0],
       done = false;
     // Attach handlers for all browsers
-    linkElement.onload = linkElement.onreadystatechange = function() {
+    linkElement.onload = linkElement.onreadystatechange = function() 
+    {
       if (
         !done &&
         (!this.readyState ||
@@ -93,7 +97,8 @@ var pagination = require('pagination');
     var head = document.getElementsByTagName("head")[0],
       done = false;
     // Attach handlers for all browsers
-    script.onload = script.onreadystatechange = function() {
+    script.onload = script.onreadystatechange = function() 
+    {
       if (
         !done &&
         (!this.readyState ||
@@ -110,15 +115,25 @@ var pagination = require('pagination');
     head.appendChild(script);
   }
 
+  function delay() 
+  {
+    return new Promise(resolve => setTimeout(resolve, 1300));
+  }
+
   function ajax_get(url, callback) 
   {
     var request = new XMLHttpRequest();
     request.open("GET", url, true);
-    request.onreadystatechange = function() {
-      if (request.readyState == 4 && request.status == 200) {
-        try {
+    request.onreadystatechange = function() 
+    {
+      if (request.readyState == 4 && request.status == 200) 
+      {
+        try 
+        {
           var data = JSON.parse(request.responseText);
-        } catch(err) {
+        } 
+        catch(err) 
+        {
           console.log(err.message + " in " + request.responseText);
           return;
         }
@@ -127,10 +142,13 @@ var pagination = require('pagination');
     };
  
     request.open("GET", url, true);
-    if(url.search('jtech.se/open/search') > 1) {
+    if(url.search('jtech.se/open/search') > 1 || url.search('/vf/') > 1) 
+    {
       l('AfJobs headers set for:' + url);
       request.setRequestHeader("api-key", "apa");
-    } else {
+    } 
+    else 
+    {
       l('AllJobs headers set for: ' + url );
       request.setRequestHeader("api-key", "am9ic2Nhbm5lckBqdGVjaC5zZQo");
     }
@@ -140,10 +158,12 @@ var pagination = require('pagination');
   function checkImageExists(imageUrl, callBack) 
   {
     var imageData = new Image();
-    imageData.onload = function() {
+    imageData.onload = function() 
+    {
       callBack(true);
     };
-    imageData.onerror = function() {
+    imageData.onerror = function() 
+    {
       callBack(false);
     };
     imageData.src = imageUrl;
@@ -193,39 +213,55 @@ var pagination = require('pagination');
     return r;
   }
 
-  function ApiUrl(cont, page = 0)
+  async function ApiUrl(cont, page, callback)
   {
-    // defaults 
-    var limit = 5;
-    var offset = 0;
-    var showexpired = false;
-    var q = '';
-    var places = '';
+      // defaults 
+      var limit = 5;
+      var offset = 0;
+      var showexpired = false;
+      var q = '';
+      var places = '';
+      var httpRequestString = apiUrl;
 
-    // fetch from container
-    if(cont.dataset.limit) { limit = cont.dataset.limit; }
-    if(cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
-    if(cont.dataset.q) { q = cont.dataset.q; }
-    if(cont.dataset.places) { places = cont.dataset.places.split(',').join('&place=');}
+      if(page > 1 ) {
+        offset = (page * limit) - limit;
+      }
 
-    if(page > 1 ) {
-      offset = (page * limit) - limit;
-    }
+      // fetch from container
+      if(cont.dataset.limit) { limit = cont.dataset.limit; }
+      if(cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
+      if(cont.dataset.q) { q = cont.dataset.q; }
+      if(cont.dataset.source != "all")
+      {
+        httpRequestString += 'open/'; 
+        if(cont.dataset.places) 
+        { 
+          var search = cont.dataset.places.split(',');
+          const response = search.map(fetchLocationId);
+      
+          Promise.all(response).then(places => {
+            places = places.join('&municipality='); 
+            httpRequestString += "search?q=" + q +
+            "&municipality=" + places +
+            "&offset=" + offset +
+            "&limit=" + limit;
+            callback(httpRequestString);
 
-    var httpRequestString = apiUrl;
+          });      
+        }
+      } else {
+        if(cont.dataset.places) 
+        { 
+          places = cont.dataset.places.split(',').join('&place=');
+          httpRequestString += "search?show-expired=" + showexpired +
+          "&q=" + q +
+          "&place=" + places +
+          "&offset=" + offset +
+          "&limit=" + limit;
+          callback(httpRequestString);
 
-    if(cont.dataset.source != "all"){
-      httpRequestString += 'open/'; 
-    }
-    
-    return (
-      httpRequestString + 
-      "search?show-expired=" + showexpired +
-      "&q=" + q +
-      "&place=" + places +
-      "&offset=" + offset +
-      "&limit=" + limit
-    );  
+        }
+      }
   }
 
   function toHttps(url) 
@@ -235,9 +271,11 @@ var pagination = require('pagination');
 
   function addAdListener(query, call) 
   {
-    [].forEach.call( document.querySelectorAll( query ), function ( e ) {
-      if(e.preventDefault != undefined) { e.preventDefault() };
-      e.addEventListener( 'click', function () {
+    [].forEach.call( document.querySelectorAll( query ), function ( e ) 
+    {
+      e.addEventListener( 'click', function (event) 
+      {
+        event.preventDefault();
         fnCall(call, e);
       }, false );
     });
@@ -252,28 +290,58 @@ var pagination = require('pagination');
 
   function addClass(e, c) 
   {
-    if (e.classList) { 
+    if (e.classList) 
+    { 
       e.classList.add(c);
-    } else {
+    } 
+    else 
+    {
       arr = e.className.split(" ");
-      if (arr.indexOf(c) == -1) {
+      if (arr.indexOf(c) == -1) 
+      {
         e.className += " " + c;
       }
     }    
   }
 
-  function removeClass(e,c) {
-    if (e.classList) { 
+  function removeClass(e,c) 
+  {
+    if (e.classList) 
+    { 
       e.classList.remove(c);
-    } else {
+    } 
+    else 
+    {
       e.className = e.className.replace(/\b"+ c +"\b/g, "");
     }
+  }
+
+  function fetchLocationId(s) 
+  {
+    url = 'https://jobs.dev.services.jtech.se/vf/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
+    return new Promise(resolve => ajax_get(url, function(response)
+    {
+      var places = [];
+      municipalies = response.result;
+      municipalies.forEach(function(municipality)
+      {
+        places.push(municipality.id);
+      })
+      resolve(places);
+    }));
   }
 
 	// ---------------------------- Helper functions end ---------------------------- //
 
   document.addEventListener("DOMContentLoaded", function(event) { 
-
+    
+    // don't add widget if it exists
+    var widget =  document.getElementById("afModalWrapper");
+    if (widget != undefined) {
+      return false;
+    }
+    
+    l('document loaded');
     afw = document.getElementById("afWidgetContainer");
     if(afw == undefined) {
       throw new Error("can't find container for widget");
@@ -294,28 +362,24 @@ var pagination = require('pagination');
         ) {
         cont = afw;          
       }
-      ajax_get(ApiUrl(cont), function(annonsdata) {
-        var total = '';
-        if(annonsdata.total != undefined) 
-        {
-          total = annonsdata.total.toString().split('');
-        } 
-        else 
-        {
-          total = annonsdata.antal_platsannonser.toString().split('');
-        }
-        total.forEach(function(num) {
-          var el = createE("span", "letter", num);
-          afJobCount.appendChild(el);
-
+      ApiUrl(cont, 0, function(url) {
+        ajax_get(url, function(annonsdata) {
+          var total = parseTotal(annonsdata).toString().split('');
+          afJobCount.innerHTML = '';
+          total.forEach(function(num) {
+            var el = createE("span", "letter", num);
+            afJobCount.appendChild(el);
+  
+          });
+        })
+        /*
+        .fail(function() {
+          $afJobCount.html("Missing data");
+          console.log("Couldn't get job ad from remote service");
         });
-      })
-      /*
-      .fail(function() {
-        $afJobCount.html("Missing data");
-        console.log("Couldn't get job ad from remote service");
-      });
-      */
+        */  
+
+      });     
 
     }
 
@@ -344,7 +408,6 @@ var pagination = require('pagination');
     document.body.appendChild(wrapper);
 
     // build header 
-  
     var t = document.querySelector("#afmodalContent h2");
     t.innerText = 'Jobbannonser ';
     if(afw.dataset.q) {
@@ -372,13 +435,26 @@ var pagination = require('pagination');
     };
 
     // close modal. 
-    addAdListener(".close-modal", function() 
+    addAdListener(".close-modal", function(e) 
     {
       removeClass(wrapper, "blocker");
       wrapper.firstChild.setAttribute("style", "display: none");
     });
 
   });
+
+  function parseTotal(annonsdata) {
+    l(annonsdata);
+    var total = '';
+    if(annonsdata.total != undefined) 
+    {
+      return annonsdata.total;
+    } 
+    else 
+    {
+      return annonsdata.antal_platsannonser;
+    }
+  }
 
   var addAdRow = function(annons) 
   {
@@ -496,85 +572,77 @@ var pagination = require('pagination');
 
   }
 
-  function getAds(sida) 
+  async function getAds(page) 
   {
     //TODO: Show waiting gif while fetching data
-    ajax_get(ApiUrl(afw,sida), function(annonsdata) 
+    ApiUrl(afw, page, function(url) 
     {
-      l(annonsdata);
-      var total = '';
-      if(annonsdata.total != undefined) 
+      ajax_get(url, function(annonsdata) 
       {
-        total = annonsdata.total;
-      } 
-      else 
-      {
-        total = annonsdata.antal_platsannonser;
-      }
+        var total = parseTotal(annonsdata);
+        if(total > ApiLimit)
+        {
+          total = ApiLimit;
+        }
 
+        if(pag1 == undefined)
+        {
+          l('pagination inizialised');
+          pag1 = new pagination(document.getElementsByClassName('afPagination')[0],
+            {
+              currentPage: 1,	                  	// number
+              totalItems: total,                  // number
+              itemsPerPage: afw.dataset.limit,    // number
+              step: 2,			                      // number
+              onInit: getAds	                    // function
+            }
+          );
+          pag1.onPageChanged(getAds);
+        }
 
-      if(total > ApiLimit)
-      {
-        total = ApiLimit;
-      }
+        var annonsTableBody = document.getElementById("afAnnonsTableBody");
+        annonsTableBody.innerHTML= '';
 
-      if(pag1 == undefined)
-      {
-        pag1 = new pagination(document.getElementsByClassName('afPagination')[0],
+        var annonser = {};
+        if(annonsdata.hits)
+        {
+          annonser = annonsdata.hits;
+        }
+        else 
+        {
+          annonser = annonsdata.platsannonser;
+        }
+        annonser.forEach(function(annons) 
+        {
+          annonsTableBody.appendChild(addAdRow(annons));
+        });
+
+        // ad opener
+        addAdListener(".afTableRow h3", function(e) 
+        {
+          document.querySelectorAll(".afTableCell").forEach(function (e) 
           {
-            currentPage: 1,	                  	// number
-            totalItems: total,                  // number
-            itemsPerPage: afw.dataset.limit,    // number
-            step: 2,			                      // number
-            onInit: getAds	                    // function
-          }
-        );
-        pag1.onPageChanged(getAds);
-      }
-
-      var annonsTableBody = document.getElementById("afAnnonsTableBody");
-      annonsTableBody.innerHTML= '';
-
-      var annonser = {};
-      if(annonsdata.hits)
-      {
-        annonser = annonsdata.hits;
-      }
-      else 
-      {
-        annonser = annonsdata.platsannonser;
-      }
-      annonser.forEach(function(annons) 
-      {
-        annonsTableBody.appendChild(addAdRow(annons));
-      });
-
-
-      // ad opener
-      addAdListener(".afTableRow h3", function(e) 
-      {
-        document.querySelectorAll(".afTableCell").forEach(function (e) 
-        {
-          removeClass(e, "opened");
+            removeClass(e, "opened");
+          });
+          e.parentNode.parentNode.className += " opened";   
         });
-        e.parentNode.parentNode.className += " opened";   
-      });
 
-      // ad closer
-      addAdListener(".afAdClose", function() 
-      {
-        document.querySelectorAll(".afTableCell").forEach(function (e) 
+        // ad closer
+        addAdListener(".afAdClose", function() 
         {
-          removeClass(e, "opened");
+          document.querySelectorAll(".afTableCell").forEach(function (e) 
+          {
+            removeClass(e, "opened");
+          });
         });
+        
+      })
+      /*
+      .fail(function() {
+        console.log("Couldn't get job ad from remote service");
       });
-      
-    })
-    /*
-    .fail(function() {
-      console.log("Couldn't get job ad from remote service");
+      */
     });
-    */
   }
 })(window, document);
 

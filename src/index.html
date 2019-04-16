@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="sv">
 <head>
-  <title>Jobtech widget</title>
+  <title><%= htmlWebpackPlugin.options.title %></title>
   <script src="script/AfPbWidget.js"></script>
   <link rel="stylesheet" media="all" href="css/main.css">
   <link rel="stylesheet" media="all" href="css/animate.css">
@@ -15,7 +15,7 @@
 </head>
 <body>
   <div class="jumbotron text-center">
-    <h1>Jobtech widget</h1>
+    <h1><%= htmlWebpackPlugin.options.MyPageHeader %></h1>
     <p>Resize this responsive page to see the effect!</p> 
   </div>   
   <div class="container">
@@ -66,5 +66,5 @@
 
     </div>
   </div>
-<script type="text/javascript" src="./script/afPbWidget.js?5b03115eb7d12a7d2c5b"></script></body>
+</body>
 </html>
