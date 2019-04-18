@@ -17,7 +17,6 @@ RUN if [ "$BUILD_STAGE" = true ];\
    mkdir /opt/bitnami/nginx/conf/vhosts ;\
    mv /tmp/conf/vhosts/stage-vhost.conf /opt/bitnami/nginx/conf/vhosts/ ;\
  else echo "Productionn build";\
-   echo kolla `ls /tmp/conf/vhosts/` ;\
    rm -f /tmp/conf/vhosts/stage-vhost.conf;\
    mkdir /opt/bitnami/nginx/conf/vhosts ;\
    mv /tmp/conf/vhosts/prod-vhost.conf /opt/bitnami/nginx/conf/vhosts/ ;\
