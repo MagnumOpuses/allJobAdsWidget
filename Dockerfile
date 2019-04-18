@@ -8,7 +8,7 @@ ENV USER=$USER
 ENV PASSWD=$PASSWD
 
 COPY  ./public /opt/bitnami/nginx/html/alljobads
-COPY --chown=1001:1001 ./vhosts /tmp/conf/vhosts
+COPY  ./vhosts /tmp/conf/vhosts
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get -yq install apache2-utils && htpasswd -dbc /opt/bitnami/nginx/.htpasswd $USER $PASSWD
 RUN if [ "$BUILD_STAGE" = true ];\
