@@ -16,6 +16,7 @@ You can put this Widget where you want on you own website by adding a specific e
 This widget is fetching all jobs from AF(Arbetsförmedlingen / Swedish employment agency) and will display them with a pagination. You can predefine areas and occupations and filter the results accordingly. 
 
 
+
 ## Live Demo / Example
 
 ![alt text](https://widgets.jobtechdev.se/alljobads/example/demo.jpg)
