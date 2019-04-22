@@ -30,7 +30,13 @@ You can choose to host on premises or use our host in the cloud, it's your choic
 
 
 ## Docker
-`%> sudo docker build -t <Image name> -f Dockerfile`
+Stage build:  
+`%> docker build --build-arg STAGE_BUILD=true \
+ --build-arg USER=user1 \
+ --build-arg PASSWD=user1pwd \
+ -t alljobadswidget .`
+Prod build:  
+`%> sudo docker build <optional: --build-arg STAGE_BUILD=false> -t <Image name> -f Dockerfile`
 <br> run
 <br> `%>sudo docker run -it  -p 8080:8080 <Image name>`
 <br> access test page
