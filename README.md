@@ -36,7 +36,6 @@ You can choose to host on premises or use our host in the cloud, it's your choic
 <br> access test page
 <br> `http://localhost:8080/alljobads/`
 
-
 Usages
 ------
 The easiest way of using the AllJobs Widget is to add references to our hosted script and needed css files at the end of the html file. See Snippet 1.
