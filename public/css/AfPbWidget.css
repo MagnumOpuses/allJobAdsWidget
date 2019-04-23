@@ -286,6 +286,12 @@ a.afApply:visited {
     color: #733ACA;
 }
 
+#afmodalContent a.current.pagNumber {
+    font-weight: 600;
+    border-bottom: 2px solid;
+    border-top: 2px solid;
+}
+
 .afPagination .pagNumber {
     margin: 5px 8px;
     display: block;
