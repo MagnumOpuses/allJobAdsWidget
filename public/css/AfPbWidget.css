@@ -42,8 +42,14 @@
 .afAdClose {
     position: absolute;
     right: 0px;
-    top: 0px;
+    top: 5px;
     cursor: pointer;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 10px solid #733ACA;
+    font-size: 0;
 }
 
 .afListContent {
@@ -244,6 +250,13 @@ a.afApply:visited {
 .afAdText {
     margin: 0 15px;
     white-space: pre-line;
+    word-wrap: break-word;
+    max-width: 80vw;
+}
+@media screen and (min-width: 768px) {
+	.afAdText {
+        max-width: 700px;
+	}
 }
 
 .afAdText > document {

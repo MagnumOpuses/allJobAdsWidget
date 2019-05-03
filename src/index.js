@@ -5,7 +5,6 @@ var pagination = require('pagination');
   // ---------------------------- Changeable variables start ---------------------------- //
 
   let logging = false;
-  const apiUrl = "https://jobs.dev.services.jtech.se/";
   const scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
   const scriptsUrl = scriptDomain + "/script/";
   const cssUrl = scriptDomain + "/css/";
@@ -15,6 +14,10 @@ var pagination = require('pagination');
 
   let afw, pag1;
   const ApiLimit = 2000;
+  const allJobsApiUrl = "https://jobtechjobs-api.dev.services.jtech.se/market/" 
+  const afJobsApiUrl ="https://open-api.dev.services.jtech.se/";
+
+
 
   // ---------------------------- Helper functions start ---------------------------- //
 
@@ -142,7 +145,7 @@ var pagination = require('pagination');
     };
  
     request.open("GET", url, true);
-    if(url.search('jtech.se/open/search') > 1 || url.search('/vf/') > 1) 
+    if(url.search('open-api.dev') > 1 || url.search('/vf/') > 1) 
     {
       l('AfJobs headers set for:' + url);
       request.setRequestHeader("api-key", "apa");
@@ -221,7 +224,10 @@ var pagination = require('pagination');
       var showexpired = false;
       var q = '';
       var places = '';
-      var httpRequestString = apiUrl;
+      var httpRequestString = allJobsApiUrl;
+      if(cont.dataset.source != "all") {
+        var httpRequestString = afJobsApiUrl;
+      }
 
       if(page > 1 ) {
         offset = (page * limit) - limit;
@@ -233,7 +239,6 @@ var pagination = require('pagination');
       if(cont.dataset.q) { q = cont.dataset.q; }
       if(cont.dataset.source != "all")
       {
-        httpRequestString += 'open/'; 
         if(cont.dataset.places) 
         { 
           var search = cont.dataset.places.split(',');
@@ -443,73 +448,75 @@ var pagination = require('pagination');
 
   });
 
-  function parseTotal(annonsdata) {
-    l(annonsdata);
-    var total = '';
-    if(annonsdata.total != undefined) 
+  function parseTotal(adData) {
+    l(adData);
+    if(adData.total.value != undefined) 
     {
-      return annonsdata.total;
+      // af
+      return adData.total.value;
     } 
     else 
     {
-      return annonsdata.antal_platsannonser;
+      // all
+      return adData.total;
     }
   }
 
-  var addAdRow = function(annons) 
+  var addAdRow = function(ad) 
   {
     // move af data to be work as alljobs
     if(afw.dataset.source != "all") {
-        annons.header = annons.annons.annonsrubrik;
-        annons.employer = {
-          'name': annons.arbetsplats.arbetsplatsnamn
-        };
-        annons.location = '';
-        if(annons.arbetsplats.postadress) {
-          annons.location += annons.arbetsplats.postadress;
+        ad.header = ad.headline;
+        ad.location = '';
+        if(ad.workplace_address.postcode) {
+          ad.location += ad.workplace_address.postcode;
         }
         if(
-          annons.arbetsplats.postort && 
-          annons.location.search(annons.arbetsplats.postort) < 1
+          ad.workplace_address.municipality && 
+          ad.location.search(ad.workplace_address.municipality) < 1
           ) {
-          if(annons.location.length > 0) {
-            annons.location += ', ';
+          if(ad.location.length > 0) {
+            ad.location += ', ';
           }
-          annons.location += annons.arbetsplats.postort;
+          ad.location += ad.workplace_address.municipality;
         }
-        annons.application = {
-          'site': {
-            'url': annons.annons.annons_url
-          },
-          'deadline': annons.ansokan.sista_ansokningsdag
-        };
+        ad.application = {};
+        if(ad.application_details.email) {
+          ad.application.url = 'mailto:' + ad.application_details.email;
+        }
+        if(ad.application_details.url) {
+          ad.application.url = ad.application_details.url;
+        }
+        if(ad.application_deadline) {
+          ad.application.deadline = ad.application_deadline;
+        }
 
-        annons.markup = annons.annons.annonstext;
+        ad.markup = ad.description.text;
     }
 
-    l(annons);
+    l(ad);
     
     // wrapper
     var newRow = createE("div", "afTableRow");
-    newRow.id = annons.id;    
+    newRow.id = ad.id;    
 
     var cell = createE("div", "afTableCell");
     var row = createE("div", "afRow");
 
     // header
-    var adheadElement = createE("h3",'',annons.header);
+    var adheadElement = createE("h3",'',ad.header);
     var jobplaceElement = createE("div", "afJobplace");
     // below header
-    if (annons.employer.name != undefined) 
+    if (ad.employer.name != undefined) 
     {
-        jobplaceElement.innerHTML = annons.employer.name + ", ";
+        jobplaceElement.innerHTML = ad.employer.name + ", ";
     }
-    jobplaceElement.innerHTML += annons.location;
+    jobplaceElement.innerHTML += ad.location;
     row.appendChild(adheadElement);
 
-    if (annons.application.deadline != undefined) 
+    if (ad.application.deadline != undefined) 
     {
-        var date = new Date(annons.application.deadline).toLocaleDateString(undefined, {
+        var date = new Date(ad.application.deadline).toLocaleDateString(undefined, {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
@@ -519,9 +526,9 @@ var pagination = require('pagination');
     }
     row.appendChild(jobplaceElement);
 
-    if (annons.employer.logoUrl) 
+    if (ad.employer.logoUrl) 
     {
-      var logoUrl = toHttps(annons.employer.logoUrl);
+      var logoUrl = toHttps(ad.employer.logoUrl);
       checkImageExists(logoUrl, function(existsImage) 
       {
         if(existsImage == true) 
@@ -539,29 +546,33 @@ var pagination = require('pagination');
     // more info
     var readMore = createE("div", "afReadMore");
     var close = createE("a","afAdClose","Stäng");
+    close.title = "Stäng";
     readMore.appendChild(close);
-    var content = createE("article", "afAdText", annons.markup);
+    var content = createE("article", "afAdText", ad.markup);
     readMore.appendChild(content);
 
     var url = '';
-    if(annons.application.site.url) 
+    if(ad.application.url) 
     {
-      url = annons.application.site.url;
+      url = ad.application.url;
     } 
-    else if(annons.sources != undefined && annons.sources[0].url) 
+    else if(ad.sources != undefined && ad.sources[0].url) 
     {
-      url = annons.sources[0].url;
+      url = ad.sources[0].url;
     }
     
     if(url.length > 1) 
     {
       var applyLink = createE("a", "afApply");
       applyLink.href = url;
-      applyLink.target = '_blank';
       applyLink.text = i18n`Apply`;
+      // target blank for link but not email
+      if(url.search('mailto') < 0) {
+        applyLink.target = '_blank';
+      }
       readMore.appendChild(applyLink);
     }
-    if(annons.sista_ansokningsdag) 
+    if(ad.sista_ansokningsdag) 
     {
       left.appendChild(dateElement);
     }
