@@ -6,6 +6,7 @@ body {
   background-image: url("https://picsum.photos/1080?image=1033");
   color: #fff;
   text-shadow: 0px 0px 1px #000;
+  margin-bottom: 0!important;
 }
 h1 {
   text-shadow: 0px 0px 4px #000;
