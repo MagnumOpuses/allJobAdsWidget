@@ -402,7 +402,7 @@ var pagination = require('pagination');
 
   function fetchLocationId(s) 
   {
-    url = 'https://jobs.dev.services.jtech.se/vf/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
+    url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
     return new Promise(resolve => ajax_get(url, function(response)
     {
       var places = [];
