@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = 
@@ -15,7 +16,8 @@ module.exports =
         MyPageHeader: 'Jobtech widget',
         template: './src/index.html',
         filename: 'index.html' //relative to root of the application
-    })
+    }),
+    new Dotenv()
   ],
   mode: 'development',
   module: {

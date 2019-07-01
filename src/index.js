@@ -16,7 +16,7 @@ var pagination = require('pagination');
   const ApiLimit = 2000;
   const allJobsApiUrl = "https://jobtechjobs-api.dev.services.jtech.se/market/" 
   const afJobsApiUrl ="https://open-api.dev.services.jtech.se/";
-
+  
 
 
   // ---------------------------- Helper functions start ---------------------------- //
@@ -227,7 +227,7 @@ var pagination = require('pagination');
     if(url.search('open-api.dev') > 1 || url.search('/vf/') > 1) 
     {
       l('AfJobs headers set for:' + url);
-      request.setRequestHeader("api-key", "apa");
+      request.setRequestHeader("api-key", process.env.APIKEY);
     } 
     else 
     {
