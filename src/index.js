@@ -1,5 +1,9 @@
 var pagination = require('pagination');
 
+import './css/AfPbWidget.css';
+import './css/animate.css';
+// import 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800';
+ 
 (function(window, document) {
 
   // ---------------------------- Changeable variables start ---------------------------- //
@@ -402,11 +406,11 @@ var pagination = require('pagination');
 
   function fetchLocationId(s) 
   {
-    url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
+    const url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
     return new Promise(resolve => ajax_get(url, function(response)
     {
       var places = [];
-      municipalies = response.result;
+      let municipalies = response.result;
       municipalies.forEach(function(municipality)
       {
         places.push(municipality.id);
@@ -430,9 +434,6 @@ var pagination = require('pagination');
     if(afw == undefined) {
       throw new Error("can't find container for widget");
     }
-
-    getStylesheet(cssUrl + "AfPbWidget.css");
-    getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
 
     var afJobCount = document.getElementById("afJobCount");
     if (afJobCount != undefined) {

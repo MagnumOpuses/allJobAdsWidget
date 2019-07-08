@@ -1,6 +1,9 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = 
 {
@@ -8,6 +11,9 @@ module.exports =
   output: {
     filename: './script/afPbWidget.js',
     path: path.resolve(__dirname, 'public')
+  },
+  optimization: {
+    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -17,15 +23,23 @@ module.exports =
         template: './src/index.html',
         filename: 'index.html' //relative to root of the application
     }),
-    new Dotenv()
+    new Dotenv(),
+    new MiniCssExtractPlugin({
+      filename: 'css/AfPbWidget.css',
+      chunkFilename: 'css/AfPbWidget.css',
+    }),
   ],
-  mode: 'development',
+  mode: 'production',
   module: {
     rules: [
       {
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
-      }
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
     ]
   }
 };
