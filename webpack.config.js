@@ -1,6 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -39,6 +39,17 @@ module.exports =
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /.(jpg|jpeg|png|svg)$/,
+        use: {
+            loader: 'file-loader',
+            options: {
+                name: '[name].[ext]',
+                useRelativePath: true,
+                outputPath: '/images/'
+            }
+        }      
       },
     ]
   }
