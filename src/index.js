@@ -1,4 +1,4 @@
-const pagination = require('pagination');
+var pagination = require('pagination');
 
 import './css/AfPbWidget.css';
 import './css/animate.css';
@@ -7,17 +7,17 @@ import './css/animate.css';
 
   // ---------------------------- Changeable variables start ---------------------------- //
 
-  let logging = false;
-  const scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
-  const cssUrl = scriptDomain + "/css/";
-  const lang = 'sv'  // en or sv
+  var logging = false;
+  var scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
+  var cssUrl = scriptDomain + "/css/";
+  var lang = 'sv'  // en or sv
 
   // ---------------------------- Changable variables end ---------------------------- //
 
-  let afw, pag1;
-  const ApiLimit = 2000;
-  const allJobsApiUrl = "https://jobtechjobs-api.dev.services.jtech.se/market/" 
-  const afJobsApiUrl ="https://open-api.dev.services.jtech.se/";
+  var afw, pag1;
+  var ApiLimit = 2000;
+  var allJobsApiUrl = "https://jobtechjobs-api.dev.services.jtech.se/market/" 
+  var afJobsApiUrl ="https://open-api.dev.services.jtech.se/";
   
 
 
@@ -31,7 +31,7 @@ import './css/animate.css';
   {
     if(logging)
     {
-      let stack;
+      var stack;
   
       try 
       {
@@ -52,8 +52,8 @@ import './css/animate.css';
   
   function numOfChar(char,count) 
   {
-    let str='';
-    let i = 0;
+    var str='';
+    var i = 0;
     do {
       i++;
       str += char;
@@ -64,7 +64,7 @@ import './css/animate.css';
   function afScrollIt(destination, duration, easing, callback) {
     duration = duration || 200; // default value
     easing = easing || 'linear'; // default value
-    const easings = {
+    var easings = {
       linear(t) {
         return t;
       },
@@ -106,13 +106,13 @@ import './css/animate.css';
       }
     };
   
-    const start = window.pageYOffset;
-    const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+    var start = window.pageYOffset;
+    var startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
   
-    const documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-    const destinationOffset = typeof destination === 'number' ? destination : destination.offsetTop;
-    const destinationOffsetToScroll = Math.round(documentHeight - destinationOffset < windowHeight ? documentHeight - windowHeight : destinationOffset);
+    var documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+    var destinationOffset = typeof destination === 'number' ? destination : destination.offsetTop;
+    var destinationOffsetToScroll = Math.round(documentHeight - destinationOffset < windowHeight ? documentHeight - windowHeight : destinationOffset);
   
     if ('requestAnimationFrame' in window === false) {
       //window.scroll(0, destinationOffsetToScroll);
@@ -123,9 +123,9 @@ import './css/animate.css';
     }
   
     function scroll() {
-      const now = 'now' in window.performance ? performance.now() : new Date().getTime();
-      const time = Math.min(1, ((now - startTime) / duration));
-      const timeFunction = easings[easing](time);
+      var now = 'now' in window.performance ? performance.now() : new Date().getTime();
+      var time = Math.min(1, ((now - startTime) / duration));
+      var timeFunction = easings[easing](time);
       window.scroll(0, Math.ceil((timeFunction * (destinationOffsetToScroll - start)) + start));
   
       if (window.pageYOffset === destinationOffsetToScroll) {
@@ -144,17 +144,17 @@ import './css/animate.css';
   function getScriptURL() 
   {
     // IE don't support currentScript, solution = querySelector
-    let script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
+    var script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
     l('loaded script:' + script.src );
     return script.src
   }
 
   function getStylesheet(url) 
   {
-    let linkElement = document.createElement("link");
+    var linkElement = document.createElement("link");
     linkElement.href = url;
     linkElement.rel = "stylesheet";
-    let head = document.getElementsByTagName("head")[0],
+    var head = document.getElementsByTagName("head")[0],
       done = false;
     // Attach handlers for all browsers
     linkElement.onload = linkElement.onreadystatechange = function() 
@@ -177,9 +177,9 @@ import './css/animate.css';
 
   function getScript(url, success) 
   {
-    let script = document.createElement("script");
+    var script = document.createElement("script");
     script.src = url;
-    let head = document.getElementsByTagName("head")[0],
+    var head = document.getElementsByTagName("head")[0],
       done = false;
     // Attach handlers for all browsers
     script.onload = script.onreadystatechange = function() 
@@ -207,7 +207,7 @@ import './css/animate.css';
 
   function ajax_get(url, callback) 
   {
-    let request = new XMLHttpRequest();
+    var request = new XMLHttpRequest();
     request.open("GET", url, true);
     request.onreadystatechange = function() 
     {
@@ -267,13 +267,13 @@ import './css/animate.css';
   i18n.db = {};
   
   i18n.set = locale => (tCurrent, ...rCurrent) => {
-    const key = tCurrent.join('\x01');
-    let db = i18n.db[locale] || (i18n.db[locale] = {});
+    var key = tCurrent.join('\x01');
+    var db = i18n.db[locale] || (i18n.db[locale] = {});
     db[key] = {
       t: tCurrent.slice(),
       v: rCurrent.map((value, i) => i)
     };
-    const config = {
+    var config = {
       for: other => (tOther, ...rOther) => {
         db = i18n.db[other] || (i18n.db[other] = {});
         db[key] = {
@@ -292,7 +292,7 @@ import './css/animate.css';
 
   function createE(e, c, i) 
   {
-    let r = document.createElement(e);
+    var r = document.createElement(e);
     if(c) r.className = c;
     if(i) r.innerHTML = i;
     return r;
@@ -301,14 +301,14 @@ import './css/animate.css';
   async function ApiUrl(cont, page, callback)
   {
       // defaults 
-      let limit = 5;
-      let offset = 0;
-      let showexpired = false;
-      let q = '';
-      let places = '';
-      let httpRequestString = afJobsApiUrl;
+      var limit = 5;
+      var offset = 0;
+      var showexpired = false;
+      var q = '';
+      var places = '';
+      var httpRequestString = afJobsApiUrl;
       if(cont.dataset.source == "all") {
-        let httpRequestString = allJobsApiUrl;
+        var httpRequestString = allJobsApiUrl;
       }
 
       if(page > 1 ) {
@@ -323,8 +323,8 @@ import './css/animate.css';
       {
         if(cont.dataset.places) 
         { 
-          let search = cont.dataset.places.split(',');
-          const response = search.map(fetchLocationId);
+          var search = cont.dataset.places.split(',');
+          var response = search.map(fetchLocationId);
       
           Promise.all(response).then(places => {
             places = places.join('&municipality='); 
@@ -370,7 +370,7 @@ import './css/animate.css';
 
   function fnCall(fn, ...args)
   {
-    let func = (typeof fn =="string")?window[fn]:fn;
+    var func = (typeof fn =="string")?window[fn]:fn;
     if (typeof func == "function") func(...args)
     else console.error(`${fn} is Not a function!`);
   }
@@ -405,11 +405,11 @@ import './css/animate.css';
 
   function fetchLocationId(s) 
   {
-    const url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
+    var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
     return new Promise(resolve => ajax_get(url, function(response)
     {
-      let places = [];
-      let municipalies = response.result;
+      var places = [];
+      var municipalies = response.result;
       municipalies.forEach(function(municipality)
       {
         places.push(municipality.id);
@@ -423,7 +423,7 @@ import './css/animate.css';
   document.addEventListener("DOMContentLoaded", function(event) { 
     
     // don't add widget if it exists
-    const widget =  document.getElementById("afModalWrapper");
+    var widget =  document.getElementById("afModalWrapper");
     if (widget != undefined) return false;
     
     l('document loaded');
@@ -436,11 +436,11 @@ import './css/animate.css';
     getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
 
 
-    const afJobCount = document.getElementById("afJobCount");
+    var afJobCount = document.getElementById("afJobCount");
     if (afJobCount != undefined) {
 
       // counter could be empty or have own values
-      let cont = afJobCount;
+      var cont = afJobCount;
       if(
         afJobCount.dataset.q == undefined && 
         afJobCount.dataset.showexpired == undefined && 
@@ -450,10 +450,10 @@ import './css/animate.css';
       }
       ApiUrl(cont, 0, function(url) {
         ajax_get(url, function(annonsdata) {
-          let total = parseTotal(annonsdata).toString().split('');
+          var total = parseTotal(annonsdata).toString().split('');
           afJobCount.innerHTML = '';
           total.forEach(function(num) {
-            let el = createE("span", "letter", num);
+            var el = createE("span", "letter", num);
             afJobCount.appendChild(el);
   
           });
@@ -462,7 +462,7 @@ import './css/animate.css';
 
     }
 
-    const wrapper = createE("div");
+    var wrapper = createE("div");
     wrapper.id = "afModalWrapper";
     wrapper.innerHTML = `<div id='afModal' class='afmodal' style='display: none'>
         <a href="#close-modal" class="close-modal ">Close</a>
@@ -487,10 +487,10 @@ import './css/animate.css';
     document.body.appendChild(wrapper);
 
     // build header 
-    let t = document.querySelector("#afmodalContent h2");
+    var t = document.querySelector("#afmodalContent h2");
     t.innerText = 'Jobbannonser ';
     if(afw.dataset.q) {
-      let q = document.createElement('span');
+      var q = document.createElement('span');
       q.className = 'afSelected';
       q.innerText = afw.dataset.q;
       t.innerHTML = 'Annonser för ';
@@ -498,7 +498,7 @@ import './css/animate.css';
     }
 
     if(afw.dataset.places) {
-      let p = document.createElement('span');
+      var p = document.createElement('span');
       p.className = 'afSelected';
       p.innerText = afw.dataset.places;
       t.innerHTML += ' att söka i ';
@@ -537,7 +537,7 @@ import './css/animate.css';
     }
   }
 
-  let addAdRow = function(ad) 
+  var addAdRow = function(ad) 
   {
     // move af data to be work as alljobs
     if(afw.dataset.source != "all") {
@@ -572,15 +572,15 @@ import './css/animate.css';
     l(ad);
     
     // wrapper
-    let newRow = createE("div", "afTableRow");
+    var newRow = createE("div", "afTableRow");
     newRow.id = ad.id;    
 
-    let cell = createE("div", "afTableCell");
-    let row = createE("div", "afRow");
+    var cell = createE("div", "afTableCell");
+    var row = createE("div", "afRow");
 
     // header
-    let adheadElement = createE("h3",'',ad.header);
-    let jobplaceElement = createE("div", "afJobplace");
+    var adheadElement = createE("h3",'',ad.header);
+    var jobplaceElement = createE("div", "afJobplace");
     // below header
     if (ad.employer.name != undefined) 
     {
@@ -591,24 +591,24 @@ import './css/animate.css';
 
     if (ad.application.deadline != undefined) 
     {
-        let date = new Date(ad.application.deadline).toLocaleDateString(undefined, {
+        var date = new Date(ad.application.deadline).toLocaleDateString(undefined, {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
         })
-        let deadline = createE("span", "afDeadline", "Sista ansökningsdagen: " + date);
+        var deadline = createE("span", "afDeadline", "Sista ansökningsdagen: " + date);
         row.appendChild(deadline);
     }
     row.appendChild(jobplaceElement);
 
     if (ad.employer.logoUrl) 
     {
-      let logoUrl = toHttps(ad.employer.logoUrl);
+      var logoUrl = toHttps(ad.employer.logoUrl);
       checkImageExists(logoUrl, function(existsImage) 
       {
         if(existsImage == true) 
         {
-          let logoElement = createE("img", "afListlogo");
+          var logoElement = createE("img", "afListlogo");
           logoElement.src = logoUrl;
           row.prepend(logoElement);
         }
@@ -619,14 +619,14 @@ import './css/animate.css';
       });
     }
     // more info
-    let readMore = createE("div", "afReadMore");
-    let close = createE("a","afAdClose","Stäng");
+    var readMore = createE("div", "afReadMore");
+    var close = createE("a","afAdClose","Stäng");
     close.title = "Stäng";
     readMore.appendChild(close);
-    let content = createE("article", "afAdText", ad.markup);
+    var content = createE("article", "afAdText", ad.markup);
     readMore.appendChild(content);
 
-    let url = '';
+    var url = '';
     if(ad.application.url) 
     {
       url = ad.application.url;
@@ -638,7 +638,7 @@ import './css/animate.css';
     
     if(url.length > 1) 
     {
-      let applyLink = createE("a", "afApply");
+      var applyLink = createE("a", "afApply");
       applyLink.href = url;
       applyLink.text = i18n`Apply`;
       // target blank for link but not email
@@ -665,7 +665,7 @@ import './css/animate.css';
     {
       ajax_get(url, function(annonsdata) 
       {
-        let total = parseTotal(annonsdata);
+        var total = parseTotal(annonsdata);
         if(total > ApiLimit)
         {
           total = ApiLimit;
@@ -686,10 +686,10 @@ import './css/animate.css';
           pag1.onPageChanged(getAds);
         }
 
-        let annonsTableBody = document.getElementById("afAnnonsTableBody");
+        var annonsTableBody = document.getElementById("afAnnonsTableBody");
         annonsTableBody.innerHTML= '';
 
-        let annonser = {};
+        var annonser = {};
         if(annonsdata.hits)
         {
           annonser = annonsdata.hits;
