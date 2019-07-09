@@ -61,8 +61,9 @@ import './css/animate.css';
     return str;
   }
 
-  function afScrollIt(destination, duration = 200, easing = 'linear', callback) {
-
+  function afScrollIt(destination, duration, easing, callback) {
+    duration = duration || 200; // default value
+    easing = easing || 'linear'; // default value
     const easings = {
       linear(t) {
         return t;
@@ -289,11 +290,11 @@ import './css/animate.css';
   i18n.set('en')`Apply`
       .for('sv')`Ansök`;
 
-  function createE(e, c = '', i = '') 
+  function createE(e, c, i) 
   {
     let r = document.createElement(e);
-    r.className = c;
-    r.innerHTML = i;
+    if(c) r.className = c;
+    if(i) r.innerHTML = i;
     return r;
   }
 
