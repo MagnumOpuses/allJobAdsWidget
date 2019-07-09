@@ -47,7 +47,7 @@ module.exports =
             options: {
                 name: '[name].[ext]',
                 useRelativePath: true,
-                outputPath: '/images/'
+                outputPath: 'images/'
             }
         }      
       },
