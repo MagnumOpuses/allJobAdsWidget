@@ -24,7 +24,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "npx webpack --watch",
-    "build": "npx webpack"
+    "build": "npx webpack --mode='development'",
+    "prod": "npx webpack --mode='production'"
   },
   "repository": {
     "type": "git",
