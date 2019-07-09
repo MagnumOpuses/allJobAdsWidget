@@ -9,7 +9,7 @@ module.exports =
 {
   entry: './src/index.js',
   output: {
-    filename: 'script/afPbWidget.js',
+    filename: 'script/AfPbWidget.js',
     path: path.resolve(__dirname, 'public')
   },
   optimization: {
