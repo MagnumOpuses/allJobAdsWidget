@@ -1,4 +1,4 @@
-var pagination = require('pagination');
+const pagination = require('pagination');
 
 import './css/AfPbWidget.css';
 import './css/animate.css';
@@ -9,7 +9,6 @@ import './css/animate.css';
 
   let logging = false;
   const scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
-  const scriptsUrl = scriptDomain + "/script/";
   const cssUrl = scriptDomain + "/css/";
   const lang = 'sv'  // en or sv
 
@@ -32,7 +31,7 @@ import './css/animate.css';
   {
     if(logging)
     {
-      var stack;
+      let stack;
   
       try 
       {
@@ -53,8 +52,8 @@ import './css/animate.css';
   
   function numOfChar(char,count) 
   {
-    var str='';
-    var i = 0;
+    let str='';
+    let i = 0;
     do {
       i++;
       str += char;
@@ -144,17 +143,17 @@ import './css/animate.css';
   function getScriptURL() 
   {
     // IE don't support currentScript, solution = querySelector
-    var script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
+    let script =  document.currentScript || document.querySelector('script[src*="AfPbWidget.js"]')
     l('loaded script:' + script.src );
     return script.src
   }
 
   function getStylesheet(url) 
   {
-    var linkElement = document.createElement("link");
+    let linkElement = document.createElement("link");
     linkElement.href = url;
     linkElement.rel = "stylesheet";
-    var head = document.getElementsByTagName("head")[0],
+    let head = document.getElementsByTagName("head")[0],
       done = false;
     // Attach handlers for all browsers
     linkElement.onload = linkElement.onreadystatechange = function() 
@@ -177,9 +176,9 @@ import './css/animate.css';
 
   function getScript(url, success) 
   {
-    var script = document.createElement("script");
+    let script = document.createElement("script");
     script.src = url;
-    var head = document.getElementsByTagName("head")[0],
+    let head = document.getElementsByTagName("head")[0],
       done = false;
     // Attach handlers for all browsers
     script.onload = script.onreadystatechange = function() 
@@ -207,7 +206,7 @@ import './css/animate.css';
 
   function ajax_get(url, callback) 
   {
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
     request.open("GET", url, true);
     request.onreadystatechange = function() 
     {
@@ -235,7 +234,7 @@ import './css/animate.css';
     else 
     {
       l('AllJobs headers set for: ' + url );
-      request.setRequestHeader("api-key", "am9ic2Nhbm5lckBqdGVjaC5zZQo");
+      request.setRequestHeader("api-key", process.env.APIKEY2);
     }
     request.send();
   }
@@ -292,7 +291,7 @@ import './css/animate.css';
 
   function createE(e, c = '', i = '') 
   {
-    var r = document.createElement(e);
+    let r = document.createElement(e);
     r.className = c;
     r.innerHTML = i;
     return r;
@@ -301,14 +300,14 @@ import './css/animate.css';
   async function ApiUrl(cont, page, callback)
   {
       // defaults 
-      var limit = 5;
-      var offset = 0;
-      var showexpired = false;
-      var q = '';
-      var places = '';
-      var httpRequestString = allJobsApiUrl;
-      if(cont.dataset.source != "all") {
-        var httpRequestString = afJobsApiUrl;
+      let limit = 5;
+      let offset = 0;
+      let showexpired = false;
+      let q = '';
+      let places = '';
+      let httpRequestString = afJobsApiUrl;
+      if(cont.dataset.source == "all") {
+        let httpRequestString = allJobsApiUrl;
       }
 
       if(page > 1 ) {
@@ -323,7 +322,7 @@ import './css/animate.css';
       {
         if(cont.dataset.places) 
         { 
-          var search = cont.dataset.places.split(',');
+          let search = cont.dataset.places.split(',');
           const response = search.map(fetchLocationId);
       
           Promise.all(response).then(places => {
@@ -408,7 +407,7 @@ import './css/animate.css';
     const url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
     return new Promise(resolve => ajax_get(url, function(response)
     {
-      var places = [];
+      let places = [];
       let municipalies = response.result;
       municipalies.forEach(function(municipality)
       {
@@ -423,10 +422,8 @@ import './css/animate.css';
   document.addEventListener("DOMContentLoaded", function(event) { 
     
     // don't add widget if it exists
-    var widget =  document.getElementById("afModalWrapper");
-    if (widget != undefined) {
-      return false;
-    }
+    const widget =  document.getElementById("afModalWrapper");
+    if (widget != undefined) return false;
     
     l('document loaded');
     afw = document.getElementById("afWidgetContainer");
@@ -434,11 +431,15 @@ import './css/animate.css';
       throw new Error("can't find container for widget");
     }
 
-    var afJobCount = document.getElementById("afJobCount");
+    getStylesheet(cssUrl + "AfPbWidget.css");
+    getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
+
+
+    const afJobCount = document.getElementById("afJobCount");
     if (afJobCount != undefined) {
 
       // counter could be empty or have own values
-      var cont = afJobCount;
+      let cont = afJobCount;
       if(
         afJobCount.dataset.q == undefined && 
         afJobCount.dataset.showexpired == undefined && 
@@ -448,26 +449,19 @@ import './css/animate.css';
       }
       ApiUrl(cont, 0, function(url) {
         ajax_get(url, function(annonsdata) {
-          var total = parseTotal(annonsdata).toString().split('');
+          let total = parseTotal(annonsdata).toString().split('');
           afJobCount.innerHTML = '';
           total.forEach(function(num) {
-            var el = createE("span", "letter", num);
+            let el = createE("span", "letter", num);
             afJobCount.appendChild(el);
   
           });
         })
-        /*
-        .fail(function() {
-          $afJobCount.html("Missing data");
-          console.log("Couldn't get job ad from remote service");
-        });
-        */  
-
       });     
 
     }
 
-    var wrapper = createE("div");
+    const wrapper = createE("div");
     wrapper.id = "afModalWrapper";
     wrapper.innerHTML = `<div id='afModal' class='afmodal' style='display: none'>
         <a href="#close-modal" class="close-modal ">Close</a>
@@ -492,10 +486,10 @@ import './css/animate.css';
     document.body.appendChild(wrapper);
 
     // build header 
-    var t = document.querySelector("#afmodalContent h2");
+    let t = document.querySelector("#afmodalContent h2");
     t.innerText = 'Jobbannonser ';
     if(afw.dataset.q) {
-      var q = document.createElement('span');
+      let q = document.createElement('span');
       q.className = 'afSelected';
       q.innerText = afw.dataset.q;
       t.innerHTML = 'Annonser för ';
@@ -503,7 +497,7 @@ import './css/animate.css';
     }
 
     if(afw.dataset.places) {
-      var p = document.createElement('span');
+      let p = document.createElement('span');
       p.className = 'afSelected';
       p.innerText = afw.dataset.places;
       t.innerHTML += ' att söka i ';
@@ -542,7 +536,7 @@ import './css/animate.css';
     }
   }
 
-  var addAdRow = function(ad) 
+  let addAdRow = function(ad) 
   {
     // move af data to be work as alljobs
     if(afw.dataset.source != "all") {
@@ -577,15 +571,15 @@ import './css/animate.css';
     l(ad);
     
     // wrapper
-    var newRow = createE("div", "afTableRow");
+    let newRow = createE("div", "afTableRow");
     newRow.id = ad.id;    
 
-    var cell = createE("div", "afTableCell");
-    var row = createE("div", "afRow");
+    let cell = createE("div", "afTableCell");
+    let row = createE("div", "afRow");
 
     // header
-    var adheadElement = createE("h3",'',ad.header);
-    var jobplaceElement = createE("div", "afJobplace");
+    let adheadElement = createE("h3",'',ad.header);
+    let jobplaceElement = createE("div", "afJobplace");
     // below header
     if (ad.employer.name != undefined) 
     {
@@ -596,24 +590,24 @@ import './css/animate.css';
 
     if (ad.application.deadline != undefined) 
     {
-        var date = new Date(ad.application.deadline).toLocaleDateString(undefined, {
+        let date = new Date(ad.application.deadline).toLocaleDateString(undefined, {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
         })
-        var deadline = createE("span", "afDeadline", "Sista ansökningsdagen: " + date);
+        let deadline = createE("span", "afDeadline", "Sista ansökningsdagen: " + date);
         row.appendChild(deadline);
     }
     row.appendChild(jobplaceElement);
 
     if (ad.employer.logoUrl) 
     {
-      var logoUrl = toHttps(ad.employer.logoUrl);
+      let logoUrl = toHttps(ad.employer.logoUrl);
       checkImageExists(logoUrl, function(existsImage) 
       {
         if(existsImage == true) 
         {
-          var logoElement = createE("img", "afListlogo");
+          let logoElement = createE("img", "afListlogo");
           logoElement.src = logoUrl;
           row.prepend(logoElement);
         }
@@ -624,14 +618,14 @@ import './css/animate.css';
       });
     }
     // more info
-    var readMore = createE("div", "afReadMore");
-    var close = createE("a","afAdClose","Stäng");
+    let readMore = createE("div", "afReadMore");
+    let close = createE("a","afAdClose","Stäng");
     close.title = "Stäng";
     readMore.appendChild(close);
-    var content = createE("article", "afAdText", ad.markup);
+    let content = createE("article", "afAdText", ad.markup);
     readMore.appendChild(content);
 
-    var url = '';
+    let url = '';
     if(ad.application.url) 
     {
       url = ad.application.url;
@@ -643,7 +637,7 @@ import './css/animate.css';
     
     if(url.length > 1) 
     {
-      var applyLink = createE("a", "afApply");
+      let applyLink = createE("a", "afApply");
       applyLink.href = url;
       applyLink.text = i18n`Apply`;
       // target blank for link but not email
@@ -670,7 +664,7 @@ import './css/animate.css';
     {
       ajax_get(url, function(annonsdata) 
       {
-        var total = parseTotal(annonsdata);
+        let total = parseTotal(annonsdata);
         if(total > ApiLimit)
         {
           total = ApiLimit;
@@ -691,10 +685,10 @@ import './css/animate.css';
           pag1.onPageChanged(getAds);
         }
 
-        var annonsTableBody = document.getElementById("afAnnonsTableBody");
+        let annonsTableBody = document.getElementById("afAnnonsTableBody");
         annonsTableBody.innerHTML= '';
 
-        var annonser = {};
+        let annonser = {};
         if(annonsdata.hits)
         {
           annonser = annonsdata.hits;
@@ -727,13 +721,7 @@ import './css/animate.css';
             removeClass(e, "opened");
           });
         });
-        
       })
-      /*
-      .fail(function() {
-        console.log("Couldn't get job ad from remote service");
-      });
-      */
     });
   }
 })(window, document);
