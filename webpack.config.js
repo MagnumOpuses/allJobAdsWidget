@@ -23,6 +23,13 @@ module.exports =
         template: './src/index.html',
         filename: 'index.html' //relative to root of the application
     }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      title: 'Jobtech widget',
+      MyPageHeader: 'Jobtech widget',
+      template: './src/notModal.html',
+      filename: 'notModal.html' //relative to root of the application
+  }),
     new Dotenv(),
     new MiniCssExtractPlugin({
       filename: 'css/AfPbWidget.css',
