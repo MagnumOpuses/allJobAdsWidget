@@ -54,11 +54,17 @@
 
 .afListContent {
     overflow: scroll;
-    max-height: 400px;
+    height: 300px;
     border: 1pt solid #ece3e3;
     flex: 0 0 100%;
     max-width: 100%;
     overflow-x: hidden;
+}
+
+@media screen and (min-width: 640px) {
+    .afListContent {
+        height: 400px;
+    }
 }
 
 .afTable {
@@ -102,6 +108,7 @@
 }
 #afAnnonsTableBody {
     display: table-row-group;
+    text-align: left;
 }
 
 .afTableCell h3 {

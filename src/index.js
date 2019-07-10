@@ -65,86 +65,6 @@ import './css/animate.css';
     return str;
   }
 
-  function afScrollIt(destination, duration, easing, callback) {
-    duration = duration || 200; // default value
-    easing = easing || 'linear'; // default value
-    var easings = {
-      linear(t) {
-        return t;
-      },
-      easeInQuad(t) {
-        return t * t;
-      },
-      easeOutQuad(t) {
-        return t * (2 - t);
-      },
-      easeInOutQuad(t) {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-      },
-      easeInCubic(t) {
-        return t * t * t;
-      },
-      easeOutCubic(t) {
-        return (--t) * t * t + 1;
-      },
-      easeInOutCubic(t) {
-        return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-      },
-      easeInQuart(t) {
-        return t * t * t * t;
-      },
-      easeOutQuart(t) {
-        return 1 - (--t) * t * t * t;
-      },
-      easeInOutQuart(t) {
-        return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
-      },
-      easeInQuint(t) {
-        return t * t * t * t * t;
-      },
-      easeOutQuint(t) {
-        return 1 + (--t) * t * t * t * t;
-      },
-      easeInOutQuint(t) {
-        return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
-      }
-    };
-  
-    var start = window.pageYOffset;
-    var startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
-  
-    var documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
-    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-    var destinationOffset = typeof destination === 'number' ? destination : destination.offsetTop;
-    var destinationOffsetToScroll = Math.round(documentHeight - destinationOffset < windowHeight ? documentHeight - windowHeight : destinationOffset);
-  
-    if ('requestAnimationFrame' in window === false) {
-      //window.scroll(0, destinationOffsetToScroll);
-      if (callback) {
-        callback();
-      }
-      return;
-    }
-  
-    function scroll() {
-      var now = 'now' in window.performance ? performance.now() : new Date().getTime();
-      var time = Math.min(1, ((now - startTime) / duration));
-      var timeFunction = easings[easing](time);
-      window.scroll(0, Math.ceil((timeFunction * (destinationOffsetToScroll - start)) + start));
-  
-      if (window.pageYOffset === destinationOffsetToScroll) {
-        if (callback) {
-          callback();
-        }
-        return;
-      }
-  
-      requestAnimationFrame(scroll);
-    }
-  
-    scroll();
-  }
-
   function getScriptURL() 
   {
     // IE don't support currentScript, solution = querySelector
@@ -465,9 +385,10 @@ import './css/animate.css';
 
     }
 
-    var wrapper = createE("div");
-    wrapper.id = "afModalWrapper";
-    wrapper.innerHTML = `<div id='afModal' class='afmodal' style='display: none'>
+    if (afw.dataset.modal !== "false"){
+      var wrapper = createE("div");
+      wrapper.id = "afModalWrapper";
+      wrapper.innerHTML = `<div id='afModal' class='afmodal' style='display: none'>
         <a href="#close-modal" class="close-modal ">Close</a>
         <div id="afmodalContent">
           <div class='afmodal-header afRow'>
@@ -487,7 +408,30 @@ import './css/animate.css';
           </div>
         </div>
       </div>`;
-    document.body.appendChild(wrapper);
+      document.body.appendChild(wrapper);
+
+    } else {
+      afw.innerHTML = `
+      <div id="afmodalContent">
+        <div class='afmodal-header afRow'>
+            <h2>Här har du jobben</h2>
+        </div>
+        <div class='afRow' >
+            <div id='afListContent' class="afListContent">
+                <div class="afTable">
+                    <div id="afAnnonsTableBody" >
+                        <!-- generated rows will go here-->
+                    </div>
+                </div>
+            </div>
+            <div class="afPaginationWrapper">
+                <div class="afPagination"></div>
+            </div>
+        </div>
+      </div>`;
+      getAds(1);
+
+    }
 
     // build header 
     var t = document.querySelector("#afmodalContent h2");
@@ -508,14 +452,16 @@ import './css/animate.css';
       t.appendChild(p);
 
     }
+    if(afw.dataset.modal !== false) {
+      afw.onclick = function(e) 
+      {
+        e.preventDefault();
+        addClass(wrapper,"blocker");
+        wrapper.firstChild.setAttribute("style", "display: inline-block");
+        getAds(1);
+      };
+    }
 
-    afw.onclick = function(e) 
-    {
-      e.preventDefault();
-      addClass(wrapper,"blocker");
-      wrapper.firstChild.setAttribute("style", "display: inline-block");
-      getAds(1);
-    };
 
     // close modal. 
     addAdListener(".close-modal", function(e) 
@@ -526,7 +472,8 @@ import './css/animate.css';
 
   });
 
-  function parseTotal(adData) {
+  function parseTotal(adData) 
+  {
     l(adData);
     if(adData.total.value != undefined) 
     {
@@ -701,7 +648,8 @@ import './css/animate.css';
         {
           annonser = annonsdata.platsannonser;
         }
-        afScrollIt(annonsTableBody,1000);
+
+        document.getElementById('afWidgetContainer').scrollIntoView();
         annonser.forEach(function(annons) 
         {
           annonsTableBody.appendChild(addAdRow(annons));
