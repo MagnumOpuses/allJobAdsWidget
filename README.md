@@ -4,61 +4,54 @@
 [A JobTech Project]( https://www.jobtechdev.se)
 
 # All Job Ads Widget v 1.0
-Use at you own risk.
-This widget is using a backend service that not yet is in production mode, therefore no promises about robustness or correctness.
-The api endpoint can be altered with no notice and effect the widget function.<BR>
 Do you want to help? Get involved!
 see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
 
-# Purpose #
+## Purpose
 
-You can put this Widget where you want on you own website by adding a specific element.
-This widget is fetching all jobs from AF(Arbetsförmedlingen / Swedish employment agency) and will display them with a pagination. You can predefine areas and occupations and filter the results accordingly. 
+This widget can be added with just 2 lines of code. <BR />
+You can put this Widget where you want on you own website.<BR />
+This widget is fetching all jobs from AF(Arbetsförmedlingen / Swedish employment agency) and will display them with a pagination. You can predefine areas and filter the results. 
 
 
 ## Live Demo / Example
 
 ![alt text](https://widgets.jobtechdev.se/alljobads/example/demo.jpg)
 
-Here you have a working example: https://widgets.jobtechdev.se/alljobads/<BR>
-<BR>
-
-
+Here you have a working example: https://widgets.jobtechdev.se/alljobads/<BR />
+<BR />
+There is also an example without modal here: https://widgets.jobtechdev.se/alljobads/notmodal.html
 
 ## Getting started
-You can choose to host on premises or use our host in the cloud, it's your choice.<br>
+Easiest is to add our javascript file to your site and add a specific element to where you want the widget. <BR />
+
+Of course you can also clone or download the files and run it on your own server. 
+If you want to make some changes, please fork the repo or ask for a [feature request](https://github.com/MagnumOpuses/mapWidget/issues/new?assignees=&labels=&template=feature_request.md). 
 
 
 ## Docker
-Stage build:  
-`%> docker build --build-arg STAGE_BUILD=true \
- --build-arg USER=user1 \
- --build-arg PASSWD=user1pwd \
- -t alljobadswidget .`
-Prod build:  
-`%> sudo docker build <optional: --build-arg STAGE_BUILD=false> -t <Image name> -f Dockerfile`
-<br> run
-<br> `%>sudo docker run -it  -p 8080:8080 <Image name>`
-<br> access test page
-<br> `http://localhost:8080/alljobads/`
+There is a dockerfile if you want to use docker. 
+<BR /> Run:
+
+`%>sudo docker build -t <Image name> -f Dockerfile`<BR /> 
+`%>sudo docker run -it  -p 8080:8080 <Image name>`<BR /> 
+
+access test page <BR /> 
+`http://localhost:8080`
 
 Usages
 ------
-The easiest way of using the AllJobs Widget is to add references to our hosted script and needed css files at the end of the html file. See Snippet 1.
-and then place a clickable element 'afWidgetContainer' according to your preferences. 
-
-First you will need the javascript file on your site or use our hosted version.
-
-`<script src="https://<host>/<url to where you put the script>/AfPbWidget.js"></script>`
-<br> or <br>
+The easiest way of using the AllJobs Widget is to add references to our hosted script at the end of the your html file. <BR />
 `<script src="https://widgets.jobtechdev.se/alljobads/script/AfPbWidget.js"></script>`
+<BR /> or <BR />
+`<script src="https://<host>/<url to where you put the script>/AfPbWidget.js"></script>`
 
-And a 'div' tag with id 'afWidgetContainer', where you want to display link do modal job list window and some content inside the 'div'.
+And a 'div' tag with id 'afWidgetContainer', where you want the widget.<br />
 Minimum is this:
 
 `<div id="afWidgetContainer"></div>`
 
-Recomended is this: 
+But if you want to use the Modal, recomended is this: 
 
 `<div id="afWidgetContainer">Click here to see jobs</div>`
 
@@ -72,7 +65,11 @@ there is also a page limit
 
 * data-limit       - (number) this will limit number of ads per page in the modal.
 
-This widget also supplies a count that shows number of jobs:
+Other options are modal(popup)or no modal. 
+
+* data-modal       - set it to false to not use modal, default is to use modal.  
+
+There is also a widget also supplies a count that shows number of jobs:
 
 `<div id="afJobCount"></div>`
 
@@ -101,6 +98,19 @@ Without counter:
 </div>
 ```
 
+Here is an example without modal (popup).
+
+```html
+<div
+    id="afWidgetContainer"
+    data-limit="10"
+    data-showexpired="false"
+    data-q="ekonomi"
+    data-places="jokkmokk,umeå"
+    data-modal="false"
+    >
+</div>
+```
 
 With counter:
 * We are looking for ads in Stockholm
