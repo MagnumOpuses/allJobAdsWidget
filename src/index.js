@@ -1,3 +1,7 @@
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+import 'whatwg-fetch';
+
 var pagination = require('pagination');
 
 import './css/AfPbWidget.css';
@@ -207,37 +211,35 @@ import './css/animate.css';
 
   function ajax_get(url, callback) 
   {
-    var request = new XMLHttpRequest();
-    request.open("GET", url, true);
-    request.onreadystatechange = function() 
-    {
-      if (request.readyState == 4 && request.status == 200) 
-      {
-        try 
-        {
-          var data = JSON.parse(request.responseText);
-        } 
-        catch(err) 
-        {
-          console.log(err.message + " in " + request.responseText);
-          return;
-        }
-        callback(data);
-      }
-    };
- 
-    request.open("GET", url, true);
+    let reqHeader = new Headers();
+
     if(url.search('open-api.dev') > 1 || url.search('/vf/') > 1) 
     {
       l('AfJobs headers set for:' + url);
-      request.setRequestHeader("api-key", process.env.APIKEY);
+      reqHeader.append('api-key', process.env.APIKEY);
     } 
     else 
     {
       l('AllJobs headers set for: ' + url );
-      request.setRequestHeader("api-key", process.env.APIKEY2);
+      reqHeader.append('api-key', process.env.APIKEY);
     }
-    request.send();
+    
+    let initObject = {
+        method: 'GET', headers: reqHeader,
+    };
+
+    fetch(url, initObject)
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        l(data);
+        callback(data);
+    })
+    .catch(function (err) {
+        console.log("Something went wrong!", err);
+    });
+ 
   }
 
   function checkImageExists(imageUrl, callBack) 
@@ -405,6 +407,7 @@ import './css/animate.css';
 
   function fetchLocationId(s) 
   {
+    s = encodeURI(s);
     var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
     return new Promise(resolve => ajax_get(url, function(response)
     {
