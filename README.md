@@ -33,12 +33,14 @@ If you want to make some changes, please fork the repo or ask for a [feature req
 There is a dockerfile if you want to use docker. 
 <BR /> Run:
 
-`%>sudo docker build -t <Image name> -f Dockerfile`<BR /> 
+`%>sudo docker build . -t <Image name>`<BR /> 
 `%>sudo docker run -it  -p 8080:8080 <Image name>`<BR /> 
 
 access test page <BR /> 
-`http://localhost:8080`
-
+`http://localhost:8080/alljobs` <BR /> 
+`http://localhost:8080/alljobs/notModal.html` <BR /> 
+ <BR /> 
+ 
 Usages
 ------
 The easiest way of using the AllJobs Widget is to add references to our hosted script at the end of the your html file. <BR />
