@@ -30,8 +30,16 @@
         background-size: 100px;
         background-position: 10px;
     }
+    .afmodal-header h2 {
+        padding-left: 100px;
+    }
 }
 
+@media screen and (min-width: 980px) {
+    .afmodal-header h2 {
+        padding-left: inherit;
+    }
+}
 .afmodal-header > * {
     text-transform: uppercase;
     text-align: center;
