@@ -20,7 +20,7 @@ This widget is fetching all jobs from AF(Arbetsförmedlingen / Swedish employmen
 
 Here you have a working example: https://widgets.jobtechdev.se/alljobads/<BR />
 <BR />
-There is also an example without modal here: https://widgets.jobtechdev.se/alljobads/notmodal.html
+There is also an example without modal here: https://widgets.jobtechdev.se/alljobads/notModal.html
 
 ## Getting started
 Easiest is to add our javascript file to your site and add a specific element to where you want the widget. <BR />
