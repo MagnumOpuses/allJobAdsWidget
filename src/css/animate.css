@@ -1,9 +1,8 @@
-body {
+#afWidgetContainer {
   text-align: center;
-  background-color: #fff;
 }
 
-.letter {
+#afWidgetContainer > .letter {
   width: 15px;
   display: inline-block;
   vertical-align: middle;
@@ -18,7 +17,7 @@ body {
 }
 @media (max-width: 625px) {
 }
-.letter:before {
+#afWidgetContainer > .letter:before {
   position: absolute;
   top: 0;
   left: 0;
@@ -26,7 +25,7 @@ body {
   word-break: break-all;
   background-color: #fff;
 }
-.letter:nth-child(1):before {
+#afWidgetContainer > .letter:nth-child(1):before {
   content: "7961524038";
   margin-top: -168px;
   animation-name: letter1;
@@ -42,7 +41,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(2):before {
+#afWidgetContainer > .letter:nth-child(2):before {
   content: "0354619728";
   margin-top: -48px;
   animation-name: letter2;
@@ -58,7 +57,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(3):before {
+#afWidgetContainer > .letter:nth-child(3):before {
   content: "7312680495";
   margin-top: -72px;
   animation-name: letter3;
@@ -74,7 +73,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(4):before {
+#afWidgetContainer > .letter:nth-child(4):before {
   content: "0374219865";
   margin-top: -168px;
   animation-name: letter4;
@@ -90,7 +89,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(5):before {
+#afWidgetContainer > .letter:nth-child(5):before {
   content: "8790231564";
   margin-top: -96px;
   animation-name: letter5;
@@ -106,7 +105,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(6):before {
+#afWidgetContainer > .letter:nth-child(6):before {
   content: "1752894036";
   margin-top: -120px;
   animation-name: letter6;
@@ -122,7 +121,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(7):before {
+#afWidgetContainer > .letter:nth-child(7):before {
   content: "9761543280";
   margin-top: -168px;
   animation-name: letter7;
@@ -138,7 +137,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(8):before {
+#afWidgetContainer > .letter:nth-child(8):before {
   content: "5869170342";
   margin-top: -144px;
   animation-name: letter8;
@@ -154,7 +153,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(9):before {
+#afWidgetContainer > .letter:nth-child(9):before {
   content: "0614953728";
   margin-top: -96px;
   animation-name: letter9;
@@ -170,7 +169,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(10):before {
+#afWidgetContainer > .letter:nth-child(10):before {
   content: "8279450316";
   margin-top: -48px;
   animation-name: letter10;
@@ -186,7 +185,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(11):before {
+#afWidgetContainer > .letter:nth-child(11):before {
   content: "3517296084";
   margin-top: -216px;
   animation-name: letter11;
@@ -202,7 +201,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(12):before {
+#afWidgetContainer > .letter:nth-child(12):before {
   content: "1245963078";
   margin-top: -120px;
   animation-name: letter12;
@@ -218,7 +217,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(13):before {
+#afWidgetContainer > .letter:nth-child(13):before {
   content: "0461352897";
   margin-top: -48px;
   animation-name: letter13;
@@ -234,7 +233,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(14):before {
+#afWidgetContainer > .letter:nth-child(14):before {
   content: "4871029563";
   margin-top: -192px;
   animation-name: letter14;
@@ -250,7 +249,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(15):before {
+#afWidgetContainer > .letter:nth-child(15):before {
   content: "9516740328";
   margin-top: 0px;
   animation-name: letter15;
@@ -266,7 +265,7 @@ body {
     margin-top: 24px;
   }
 }
-.letter:nth-child(16):before {
+#afWidgetContainer > .letter:nth-child(16):before {
   content: "7925364801";
   margin-top: -144px;
   animation-name: letter16;

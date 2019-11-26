@@ -20,8 +20,8 @@ import './css/animate.css';
 
   var afw, pag1;
   var ApiLimit = 2000;
-  var allJobsApiUrl = "https://jobtechjobs-api.dev.services.jtech.se/market/" 
-  var afJobsApiUrl ="https://open-api.dev.services.jtech.se/";
+  var allJobsApiUrl = "https://jobsearch.api.jobtechdev.se/market/"
+  var afJobsApiUrl ="https://jobsearch.api.jobtechdev.se/";
   
 
 
