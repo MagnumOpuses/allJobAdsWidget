@@ -470,6 +470,7 @@ import './css/animate.css';
       wrapper.firstChild.setAttribute("style", "display: none");
     });
 
+
   });
 
   function parseTotal(adData) 

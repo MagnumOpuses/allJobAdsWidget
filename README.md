@@ -143,7 +143,6 @@ With counter:
           "
         ></div>
         <div style="text-align: center; font-size: 13px">lediga jobb att söka i <strong>Stockholm</strong></div>
-      </div>
     </div>
 </div>
 ```
