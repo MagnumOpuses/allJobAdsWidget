@@ -239,6 +239,9 @@ import './css/animate.css';
 
       // fetch from container
       if(cont.dataset.limit) { limit = cont.dataset.limit; }
+      if(page > 1 ) {
+          offset = (page * limit) - limit;
+      }
       if(cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
       if(cont.dataset.q) { q = cont.dataset.q; }
       if(cont.dataset.source != "all")
@@ -452,7 +455,7 @@ import './css/animate.css';
       t.appendChild(p);
 
     }
-    if(afw.dataset.modal !== false) {
+    if(afw.dataset.modal !== "false") {
       afw.onclick = function(e) 
       {
         e.preventDefault();
