@@ -233,9 +233,7 @@ import './css/animate.css';
         var httpRequestString = allJobsApiUrl;
       }
 
-      if(page > 1 ) {
-        offset = (page * limit) - limit;
-      }
+
 
       // fetch from container
       if(cont.dataset.limit) { limit = cont.dataset.limit; }
