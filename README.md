@@ -5,7 +5,7 @@
 
 # All Job Ads Widget v 1.0
 Do you want to help? Get involved!
-see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
+see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/raw/master/CONTRIBUTING.md)
 
 ## Purpose
 
