@@ -15,7 +15,6 @@ This widget is fetching all jobs from AF(Arbetsförmedlingen / Swedish employmen
 
 
 ## Live Demo / Example
-![alt text](https://github.com/MagnumOpuses/alljobads/raw/master/example/demo.jpg)
 
 ![alt text](https://widgets.jobtechdev.se/alljobads/example/demo.jpg)
 
