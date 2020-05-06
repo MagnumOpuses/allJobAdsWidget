@@ -1,3 +1,5 @@
+[_metadata_:author]:- "dsadasdsa"
+
 ![alt text][logo] 
 
 [logo]: https://github.com/MagnumOpuses/project-meta/raw/master/img/jobtechdev_black.png "JobTech dev logo"
