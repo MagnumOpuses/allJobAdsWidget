@@ -228,6 +228,7 @@ import './css/animate.css';
       var showexpired = false;
       var q = '';
       var places = '';
+      var orgnumber ='';
       var httpRequestString = afJobsApiUrl;
       if(cont.dataset.source == "all") {
         var httpRequestString = allJobsApiUrl;
@@ -242,6 +243,7 @@ import './css/animate.css';
       }
       if(cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
       if(cont.dataset.q) { q = cont.dataset.q; }
+      if(cont.dataset.orgnumber) { orgnumber = cont.dataset.orgnumber; }
       if(cont.dataset.source != "all")
       {
         if(cont.dataset.places) 
@@ -254,7 +256,8 @@ import './css/animate.css';
             httpRequestString += "search?q=" + q +
             "&municipality=" + places +
             "&offset=" + offset +
-            "&limit=" + limit;
+            "&limit=" + limit +
+            "&employer=" + orgnumber;
             callback(httpRequestString);
 
           });      
@@ -267,7 +270,8 @@ import './css/animate.css';
           "&q=" + q +
           "&place=" + places +
           "&offset=" + offset +
-          "&limit=" + limit;
+          "&limit=" + limit +
+          "&employer=" + orgnumber;
           callback(httpRequestString);
 
         }
@@ -368,7 +372,8 @@ import './css/animate.css';
       if(
         afJobCount.dataset.q == undefined && 
         afJobCount.dataset.showexpired == undefined && 
-        afJobCount.dataset.places == undefined
+        afJobCount.dataset.places == undefined&&
+        afJobCount.dataset.orgnumber == undefined
         ) {
         cont = afw;          
       }
