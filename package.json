@@ -24,11 +24,13 @@
     "dotenv-webpack": "^1.7.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "npx webpack --watch",
+    "start": "webpack-dev-server",
     "build": "npx webpack --mode='development'",
     "prod": "npx webpack --mode='production'"
   },
