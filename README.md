@@ -1,4 +1,4 @@
-[_metadata_:author]:- "dsadasdsa"
+[_metadata_:url]:- "https://github.com/MagnumOpuses/allJobAdsWidget"
 
 ![alt text][logo] 
 
