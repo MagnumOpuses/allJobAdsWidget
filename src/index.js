@@ -246,8 +246,7 @@ import './css/animate.css';
       if(cont.dataset.orgnumber) { orgnumber = cont.dataset.orgnumber; }
       if(cont.dataset.source != "all")
       {
-        if(cont.dataset.places) 
-        {
+
           var search = cont.dataset.places.split(',');
           var response = search.map(fetchLocationId);
       
@@ -262,10 +261,10 @@ import './css/animate.css';
             callback(httpRequestString);
 
           });      
-        }
+
       } else {
-        if(cont.dataset.places) 
-        { 
+        if(cont.dataset.places)
+        {
           places = cont.dataset.places.split(',').join('&place=');
           httpRequestString += "search?show-expired=" + showexpired +
           "&q=" + q +
