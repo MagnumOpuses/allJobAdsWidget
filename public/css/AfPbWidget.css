@@ -20,7 +20,7 @@
 }
 
 .afmodal-header {
-    border-bottom: 3px solid #5009BD;
+    border-bottom: 3px solid #222222;
 }
 
 @media screen and (min-width: 768px) {
@@ -56,7 +56,7 @@
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-bottom: 10px solid #733ACA;
+    border-bottom: 10px solid #222222;
     font-size: 0;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .afTableCell h3 {
-    color: #733ACA;
+    color: #222222;
     font-size: 1.1em;
     margin: 15px 0 0 0;
     font-weight: 600;
@@ -235,7 +235,7 @@
 }
 
 a.afApply {
-    border: 3px solid #733ACA;
+    border: 3px solid #222222;
     padding: 5px 20px;
     display: inline-block;
     margin: .5em 0;
@@ -312,7 +312,7 @@ a.afApply:visited {
 }
 #afmodalContent .afPagination a {
     cursor: pointer;
-    color: #733ACA;
+    color: #222222;
 }
 
 #afmodalContent a.current.pagNumber {
@@ -326,7 +326,7 @@ a.afApply:visited {
     display: block;
 }
 .afSelected {
-    color: #733ACA;
+    color: #222222;
 }
 .afSelected:last-child {
     display: block;
