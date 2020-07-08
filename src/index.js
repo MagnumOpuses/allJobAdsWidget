@@ -247,14 +247,13 @@ import './css/animate.css';
       if(cont.dataset.source != "all")
       {
         if(cont.dataset.places) 
-        { 
+        {
           var search = cont.dataset.places.split(',');
           var response = search.map(fetchLocationId);
       
           Promise.all(response).then(places => {
-            places = places.join('&municipality='); 
-            httpRequestString += "search?q=" + q +
-            "&municipality=" + places +
+              places = places.join("");
+            httpRequestString += "search?q=" + q + places +
             "&offset=" + offset +
             "&limit=" + limit;
               if(orgnumber){
@@ -338,14 +337,16 @@ import './css/animate.css';
   function fetchLocationId(s) 
   {
     s = encodeURI(s);
-    var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&type=municipality&show-count=false&q=' + s;
+    var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&show-count=false&q=' + s;
     return new Promise(resolve => ajax_get(url, function(response)
     {
-      var places = [];
-      var municipalies = response.result;
-      municipalies.forEach(function(municipality)
+      var places = "";
+      var results = response.result;
+
+        results.forEach(function(result)
       {
-        places.push(municipality.id);
+          places += '&' + result.type + '=' + result.id;
+          console.log(places)
       })
       resolve(places);
     }));
