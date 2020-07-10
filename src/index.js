@@ -344,8 +344,9 @@ import './css/animate.css';
 
         results.forEach(function(result)
       {
+          if (result.type === "place" || result.type === "country" || result.type === "municipality" || result.type === "region") {
           places += '&' + result.type + '=' + result.id;
-          console.log(places)
+          }
       })
       resolve(places);
     }));
