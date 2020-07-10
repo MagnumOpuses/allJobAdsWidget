@@ -1,4 +1,4 @@
-[_metadata_:author]:- "dsadasdsa"
+[_metadata_:url]:- "https://github.com/MagnumOpuses/allJobAdsWidget"
 
 ![alt text][logo] 
 
@@ -7,7 +7,7 @@
 
 # All Job Ads Widget v 1.0
 Do you want to help? Get involved!
-see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/raw/master/CONTRIBUTING.md)
+see [CONTRIBUTING]( https://github.com/MagnumOpuses/allJobAdsWidget/blob/master/CONTRIBUTING.md)
 
 ## Purpose
 
@@ -64,7 +64,9 @@ To filter we have the following options:
 
 * data-showexpired - (true or false) will list or not list expired ads. 
 * data-q           - (string) free search text string to filter jobs, example: ekonomi, truckförare etc 
-* data-places      - (string) text string to filter location, if you want more then one place seperate with comma. 
+* data-places      - (string) text string to filter location, if you want more then one place seperate with comma. Filter for municipality, region or country.
+* data-orgnumber   - (string) organisation number
+
 
 there is also a page limit 
 
