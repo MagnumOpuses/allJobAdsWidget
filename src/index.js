@@ -227,6 +227,7 @@ import './css/animate.css';
       var offset = 0;
       var showexpired = false;
       var q = '';
+      var occupationalid = "";
       var places = '';
       var orgnumber ='';
       var httpRequestString = afJobsApiUrl;
@@ -244,22 +245,31 @@ import './css/animate.css';
       if(cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
       if(cont.dataset.q) { q = cont.dataset.q; }
       if(cont.dataset.orgnumber) { orgnumber = cont.dataset.orgnumber; }
+      /*if(cont.dataset.occupationalid) { occupationalid = cont.dataset.occupationalid; }*/
       if(cont.dataset.source != "all")
       {
 
           var search = cont.dataset.places.split(',');
           var response = search.map(fetchLocationId);
+          console.log("1");
+          var searchOccupationalid = cont.dataset.occupationalid.split(',');
+          console.log("123123");
+          var responseOccupatinalid = searchOccupationalid.map(fetchoccupationalid);
       
           Promise.all(response).then(places => {
+
               places = places.join("");
-            httpRequestString += "search?q=" + q + places +
-            "&offset=" + offset +
-            "&limit=" + limit;
-              if(orgnumber){
+              httpRequestString += "search?q=" + q + places +
+                  "&offset=" + offset +
+                  "&limit=" + limit;
+              if (orgnumber) {
                   httpRequestString += '&employer=' + orgnumber;
               }
-            callback(httpRequestString);
-
+              Promise.all(responseOccupatinalid).then(ids => {
+                  ids = ids.join("");
+                  httpRequestString += ids;
+                  callback(httpRequestString);
+              });
           });      
 
       } else {
@@ -274,6 +284,9 @@ import './css/animate.css';
             if(orgnumber){
                 httpRequestString += '&employer=' + orgnumber;
             }
+/*            if (occupationalid) {
+                httpRequestString += ''
+            }*/
           callback(httpRequestString);
 
         }
@@ -340,6 +353,7 @@ import './css/animate.css';
     return new Promise(resolve => ajax_get(url, function(response)
     {
       var places = "";
+
       var results = response.result;
 
         results.forEach(function(result)
@@ -348,9 +362,30 @@ import './css/animate.css';
           places += '&' + result.type + '=' + result.id;
           }
       })
+
       resolve(places);
+
     }));
   }
+    function fetchoccupationalid(s)
+    {
+        s = encodeURI(s);
+        var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&show-count=false&q=' + s;
+        return new Promise(resolve => ajax_get(url, function(response)
+        {
+            var ids = "";
+
+            var results = response.result;
+
+            results.forEach(function(result)
+            {
+                if (result.type === "occupation" || result.type === "occupation-group" || result.type === "occupation-field") {
+                    ids += '&' + result.type + '=' + result.id;
+                }
+            })
+            resolve(ids);
+        }));
+    }
 
 	// ---------------------------- Helper functions end ---------------------------- //
 
