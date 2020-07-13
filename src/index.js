@@ -252,9 +252,12 @@ import './css/animate.css';
           var search = cont.dataset.places.split(',');
           var response = search.map(fetchLocationId);
           console.log("1");
-          var searchOccupationalid = cont.dataset.occupationalid.split(',');
+          if (cont.dataset.occupationalid){
+              var searchOccupationalid = cont.dataset.occupationalid.split(',');
+              var responseOccupatinalid = searchOccupationalid.map(fetchoccupationalid);
+          }
           console.log("123123");
-          var responseOccupatinalid = searchOccupationalid.map(fetchoccupationalid);
+
       
           Promise.all(response).then(places => {
 
@@ -265,11 +268,13 @@ import './css/animate.css';
               if (orgnumber) {
                   httpRequestString += '&employer=' + orgnumber;
               }
+              if (!searchOccupationalid){callback(httpRequestString);}
               Promise.all(responseOccupatinalid).then(ids => {
                   ids = ids.join("");
                   httpRequestString += ids;
                   callback(httpRequestString);
               });
+
           });      
 
       } else {
