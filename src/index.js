@@ -249,13 +249,17 @@ import './css/animate.css';
       /*if(cont.dataset.occupationalid) { occupationalid = cont.dataset.occupationalid; }*/
       if(cont.dataset.source != "all")
       {
+
           if (cont.dataset.places){
               var search = cont.dataset.places.split(',');
               var response = search.map(fetchLocationId);
+
+
           }
           if (cont.dataset.occupationalid){
               var searchOccupationalid = cont.dataset.occupationalid.split(',');
               var responseOccupatinalid = searchOccupationalid.map(fetchoccupationalid);
+
           }
           httpRequestString += "search?q=" + q +
               "&offset=" + offset +
@@ -263,23 +267,48 @@ import './css/animate.css';
           if (orgnumber) {
               httpRequestString += '&employer=' + orgnumber;
           }
-          if(cont.dataset.places){
 
-          Promise.all(response).then(places => {
-              places = places.join("");
-              httpRequestString += places;
 
-          });
+
+          if(cont.dataset.places && cont.dataset.occupationalid){
+              Promise.all([response,responseOccupatinalid]).then(values => {
+                  Promise.all(responseOccupatinalid).then(occuids => {
+                      occuids = occuids.join("");
+
+                      httpRequestString += occuids;
+                      Promise.all(response).then(places => {
+                          places = places.join("");
+                          httpRequestString += places;
+                          callback(httpRequestString);
+                      });
+
+                  });
+
+              })
           }
-          if(cont.dataset.occupationalid){
-          Promise.all(responseOccupatinalid).then(occuids => {
-              occuids = occuids.join("");
-              httpRequestString += occuids;
+          if(cont.dataset.places && !cont.dataset.occupationalid){
+              Promise.all(response).then(values => {
+                  Promise.all(response).then(places => {
+                      places = places.join("");
+                      httpRequestString += places;
+                      callback(httpRequestString);
+                  });
 
-
-          });
+              })
           }
-          callback(httpRequestString);
+          if(!cont.dataset.places && cont.dataset.occupationalid){
+              Promise.all(responseOccupatinalid).then(values => {
+                  Promise.all(responseOccupatinalid).then(occuids => {
+                      occuids = occuids.join("");
+                      console.log("hej")
+                      httpRequestString += occuids;
+                      callback(httpRequestString);
+                  });
+
+              })
+          }
+
+
 
       } else {
         if(cont.dataset.places)
@@ -374,8 +403,8 @@ import './css/animate.css';
       })
 
       resolve(places);
-
     }));
+
   }
   function fetchoccupationalid(s)
   {
@@ -383,6 +412,7 @@ import './css/animate.css';
       var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&show-count=false&q=' + s;
       return new Promise(resolve => ajax_get(url, function(response)
       {
+
         var occuids = "";
 
         var results = response.result;
@@ -395,6 +425,7 @@ import './css/animate.css';
         })
           resolve(occuids);
       }));
+
   }
 
 	// ---------------------------- Helper functions end ---------------------------- //
