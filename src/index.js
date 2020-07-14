@@ -268,7 +268,7 @@ import './css/animate.css';
               if (orgnumber) {
                   httpRequestString += '&employer=' + orgnumber;
               }
-              if (!searchOccupationalid){callback(httpRequestString);}
+              if (occupationalid === ""){callback(httpRequestString);}
               Promise.all(responseOccupatinalid).then(ids => {
                   ids = ids.join("");
                   httpRequestString += ids;
@@ -384,7 +384,7 @@ import './css/animate.css';
 
             results.forEach(function(result)
             {
-                if (result.type === "occupation" || result.type === "occupation-group" || result.type === "occupation-field") {
+                if (result.type === "occupation" || result.type === "occupation-group" || result.type === "occupation-field" || result.type === "occupation-name") {
                     ids += '&' + result.type + '=' + result.id;
                 }
             })
