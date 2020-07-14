@@ -229,6 +229,7 @@ import './css/animate.css';
       var q = '';
       var occupationalid = "";
       var places = '';
+      var occuids = '';
       var orgnumber ='';
       var httpRequestString = afJobsApiUrl;
       if(cont.dataset.source == "all") {
@@ -258,7 +259,6 @@ import './css/animate.css';
 
       
           Promise.all(response).then(places => {
-
               places = places.join("");
               httpRequestString += "search?q=" + q + places +
                   "&offset=" + offset +
@@ -266,13 +266,13 @@ import './css/animate.css';
               if (orgnumber) {
                   httpRequestString += '&employer=' + orgnumber;
               }
-              if (occupationalid === ""){callback(httpRequestString);}
-              Promise.all(responseOccupatinalid).then(ids => {
-                  ids = ids.join("");
-                  httpRequestString += ids;
+              Promise.all(responseOccupatinalid).then(occuids => {
+                  occuids = occuids.join("");
+                  httpRequestString += occuids;
                   callback(httpRequestString);
-              });
 
+              });
+              if(!cont.dataset.occupationalid){callback(httpRequestString);}
           });      
 
       } else {
@@ -370,25 +370,25 @@ import './css/animate.css';
 
     }));
   }
-    function fetchoccupationalid(s)
-    {
-        s = encodeURI(s);
-        var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&show-count=false&q=' + s;
-        return new Promise(resolve => ajax_get(url, function(response)
+  function fetchoccupationalid(s)
+  {
+      s = encodeURI(s);
+      var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&show-count=false&q=' + s;
+      return new Promise(resolve => ajax_get(url, function(response)
+      {
+        var occuids = "";
+
+        var results = response.result;
+
+        results.forEach(function(result)
         {
-            var ids = "";
-
-            var results = response.result;
-
-            results.forEach(function(result)
-            {
-                if (result.type === "occupation" || result.type === "occupation-group" || result.type === "occupation-field" || result.type === "occupation-name") {
-                    ids += '&' + result.type + '=' + result.id;
-                }
-            })
-            resolve(ids);
-        }));
-    }
+            if (result.type === "occupation" || result.type === "occupation-group" || result.type === "occupation-field" || result.type === "occupation-name") {
+                occuids += '&' + result.type + '=' + result.id;
+            }
+        })
+          resolve(occuids);
+      }));
+  }
 
 	// ---------------------------- Helper functions end ---------------------------- //
 
