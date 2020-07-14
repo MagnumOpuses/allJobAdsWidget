@@ -251,12 +251,10 @@ import './css/animate.css';
 
           var search = cont.dataset.places.split(',');
           var response = search.map(fetchLocationId);
-          console.log("1");
           if (cont.dataset.occupationalid){
               var searchOccupationalid = cont.dataset.occupationalid.split(',');
               var responseOccupatinalid = searchOccupationalid.map(fetchoccupationalid);
           }
-          console.log("123123");
 
       
           Promise.all(response).then(places => {
