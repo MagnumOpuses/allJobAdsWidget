@@ -249,31 +249,37 @@ import './css/animate.css';
       /*if(cont.dataset.occupationalid) { occupationalid = cont.dataset.occupationalid; }*/
       if(cont.dataset.source != "all")
       {
-
-          var search = cont.dataset.places.split(',');
-          var response = search.map(fetchLocationId);
+          if (cont.dataset.places){
+              var search = cont.dataset.places.split(',');
+              var response = search.map(fetchLocationId);
+          }
           if (cont.dataset.occupationalid){
               var searchOccupationalid = cont.dataset.occupationalid.split(',');
               var responseOccupatinalid = searchOccupationalid.map(fetchoccupationalid);
           }
+          httpRequestString += "search?q=" + q +
+              "&offset=" + offset +
+              "&limit=" + limit;
+          if (orgnumber) {
+              httpRequestString += '&employer=' + orgnumber;
+          }
+          if(cont.dataset.places){
 
-      
           Promise.all(response).then(places => {
               places = places.join("");
-              httpRequestString += "search?q=" + q + places +
-                  "&offset=" + offset +
-                  "&limit=" + limit;
-              if (orgnumber) {
-                  httpRequestString += '&employer=' + orgnumber;
-              }
-              Promise.all(responseOccupatinalid).then(occuids => {
-                  occuids = occuids.join("");
-                  httpRequestString += occuids;
-                  callback(httpRequestString);
+              httpRequestString += places;
 
-              });
-              if(!cont.dataset.occupationalid){callback(httpRequestString);}
-          });      
+          });
+          }
+          if(cont.dataset.occupationalid){
+          Promise.all(responseOccupatinalid).then(occuids => {
+              occuids = occuids.join("");
+              httpRequestString += occuids;
+
+
+          });
+          }
+          callback(httpRequestString);
 
       } else {
         if(cont.dataset.places)
@@ -353,6 +359,7 @@ import './css/animate.css';
   {
     s = encodeURI(s);
     var url = afJobsApiUrl + 'taxonomy/search?offset=0&limit=10&show-count=false&q=' + s;
+
     return new Promise(resolve => ajax_get(url, function(response)
     {
       var places = "";
