@@ -66,7 +66,7 @@ To filter we have the following options:
 * data-q           - (string) free search text string to filter jobs, example: ekonomi, truckförare etc 
 * data-places      - (string) text string to filter location, if you want more then one place seperate with comma. Filter for municipality, region or country.
 * data-orgnumber   - (string) organisation number
-* data-occupationalid-(string) Filter for SSYK, YrkesID or ConceptId (https://jobtechdev.se/en/docs/apis/taxonomy/)
+* data-occupationalid - (string) Filter for SSYK, YrkesID or ConceptId (https://jobtechdev.se/en/docs/apis/taxonomy/)
 
 
 there is also a page limit 
