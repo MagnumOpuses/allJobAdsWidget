@@ -287,25 +287,23 @@ import './css/animate.css';
               })
           }
           if(cont.dataset.places && !cont.dataset.occupationalid){
-              Promise.all(response).then(values => {
-                  Promise.all(response).then(places => {
-                      places = places.join("");
-                      httpRequestString += places;
-                      callback(httpRequestString);
-                  });
 
-              })
+              Promise.all(response).then(places => {
+                  places = places.join("");
+                  httpRequestString += places;
+                  callback(httpRequestString);
+              });
+
+
           }
           if(!cont.dataset.places && cont.dataset.occupationalid){
-              Promise.all(responseOccupatinalid).then(values => {
-                  Promise.all(responseOccupatinalid).then(occuids => {
-                      occuids = occuids.join("");
-                      console.log("hej")
-                      httpRequestString += occuids;
-                      callback(httpRequestString);
-                  });
+              Promise.all(responseOccupatinalid).then(occuids => {
+                  occuids = occuids.join("");
+                  httpRequestString += occuids;
+                  callback(httpRequestString);
+              });
 
-              })
+
           }
 
 
