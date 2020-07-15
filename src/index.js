@@ -249,17 +249,18 @@ import './css/animate.css';
       /*if(cont.dataset.occupationalid) { occupationalid = cont.dataset.occupationalid; }*/
       if(cont.dataset.source != "all")
       {
-
+          var promises = [];
           if (cont.dataset.places){
               var search = cont.dataset.places.split(',');
-              var response = search.map(fetchLocationId);
+              var response = fetchLocationId(search);
+              promises.push(response);
 
 
           }
           if (cont.dataset.occupationalid){
               var searchOccupationalid = cont.dataset.occupationalid.split(',');
-              var responseOccupatinalid = searchOccupationalid.map(fetchoccupationalid);
-
+              var responseOccupatinalid = fetchoccupationalid(searchOccupationalid);
+              promises.push(responseOccupatinalid);
           }
           httpRequestString += "search?q=" + q +
               "&offset=" + offset +
@@ -269,42 +270,12 @@ import './css/animate.css';
           }
 
 
+          Promise.all(promises).then((places) => {
+              places = places.join("");
+              httpRequestString += places;
+              callback(httpRequestString);
+      })
 
-          if(cont.dataset.places && cont.dataset.occupationalid){
-              Promise.all([response,responseOccupatinalid]).then(values => {
-                  Promise.all(responseOccupatinalid).then(occuids => {
-                      occuids = occuids.join("");
-
-                      httpRequestString += occuids;
-                      Promise.all(response).then(places => {
-                          places = places.join("");
-                          httpRequestString += places;
-                          callback(httpRequestString);
-                      });
-
-                  });
-
-              })
-          }
-          if(cont.dataset.places && !cont.dataset.occupationalid){
-
-              Promise.all(response).then(places => {
-                  places = places.join("");
-                  httpRequestString += places;
-                  callback(httpRequestString);
-              });
-
-
-          }
-          if(!cont.dataset.places && cont.dataset.occupationalid){
-              Promise.all(responseOccupatinalid).then(occuids => {
-                  occuids = occuids.join("");
-                  httpRequestString += occuids;
-                  callback(httpRequestString);
-              });
-
-
-          }
 
 
 
