@@ -270,9 +270,9 @@ import './css/animate.css';
           }
 
 
-          Promise.all(promises).then((places) => {
-              places = places.join("");
-              httpRequestString += places;
+          Promise.all(promises).then((values) => {
+              values = values.join("");
+              httpRequestString += values;
               callback(httpRequestString);
       })
 
