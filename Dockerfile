@@ -16,10 +16,12 @@ RUN if [ "$BUILD_STAGE" = true ];\
  then echo "Stage build" ;\
    rm -f /tmp/conf/vhosts/prod-vhost.conf;\
    mkdir /opt/bitnami/nginx/conf/vhosts ;\
+   cp /tmp/conf/vhosts/stage-vhosts.conf /opt/bitnami/nginx/conf/server_blocks/ ;\
    mv /tmp/conf/vhosts/stage-vhost.conf /opt/bitnami/nginx/conf/vhosts/ ;\
  else echo "Productionn build";\
    rm -f /tmp/conf/vhosts/stage-vhost.conf;\
    mkdir /opt/bitnami/nginx/conf/vhosts ;\
+   cp /tmp/conf/vhosts/stage-vhosts.conf /opt/bitnami/nginx/conf/server_blocks/ ;\
    mv /tmp/conf/vhosts/prod-vhost.conf /opt/bitnami/nginx/conf/vhosts/ ;\
  fi
 
