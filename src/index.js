@@ -413,6 +413,13 @@ import './css/animate.css';
 
     getStylesheet(cssUrl + "AfPbWidget.css");
     getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
+    
+    var logoUrl = scriptDomain + "/images/logo-af.svg";
+    var content = afw.innerHTML;
+    afw.innerHTML = "<div style='width: 100%; height:30px; margin-top:10px; margin-bottom:10px; background:url(" + logoUrl + ") no-repeat center; background-size: contain;'></div>" 
+      + "<div style='height: 2px; background-image: linear-gradient(to right, #1f1b5a , #2a8eca);'></div>"
+      + content 
+      + "<div style='background-image: linear-gradient(to right, #1f1b5a , #2a8eca); color: #fff; padding: 10px;'>Visa lediga jobb</div>";
 
 
     var afJobCount = document.getElementById("afJobCount");
@@ -716,13 +723,16 @@ import './css/animate.css';
         });
 
         // ad opener
-        addAdListener(".afTableRow h3", function(e) 
+        addAdListener(".afTableCell .afRow", function(e) 
         {
+          var className = e.parentNode.className;
           document.querySelectorAll(".afTableCell").forEach(function (e) 
           {
             removeClass(e, "opened");
           });
-          e.parentNode.parentNode.className += " opened";   
+          if(className == null || className.indexOf(" opened") < 0) {
+            e.parentNode.className += " opened";            
+          }
         });
 
         // ad closer
