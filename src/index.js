@@ -23,8 +23,6 @@ import './css/animate.css';
     var allJobsApiUrl = "https://jobsearch.api.jobtechdev.se/market/"
     var afJobsApiUrl = "https://jobsearch.api.jobtechdev.se/";
 
-
-
     // ---------------------------- Helper functions start ---------------------------- //
 
     /**
@@ -127,7 +125,7 @@ import './css/animate.css';
         }
         else {
             l('AllJobs headers set for: ' + url);
-            reqHeader.append('api-key', process.env.APIKEY);
+            reqHeader.append('api-key', 'Y29tbXVuaXR5QGpvYnRlY2hkZXYuc2U');
         }
 
         let initObject = {
@@ -374,12 +372,13 @@ import './css/animate.css';
         getStylesheet(cssUrl + "AfPbWidget.css");
         getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
 
-        var logoUrl = scriptDomain + "/images/logo-af.svg";
+        var afLogoUrl = scriptDomain + "/images/logo-af.svg";
+        var jtLogoUrl = scriptDomain + "/images/JobTechDevelopment_black.svg";
         var content = afw.innerHTML;
-        afw.innerHTML = "<div style='width: 100%; height:30px; margin-top:10px; margin-bottom:10px; background:url(" + logoUrl + ") no-repeat center; background-size: contain;'></div>"
-            + "<div style='height: 2px; background-image: linear-gradient(to right, #1f1b5a , #2a8eca);'></div>"
+        afw.innerHTML = "<div style='width: 100%; height:30px; margin-top:10px; margin-bottom:10px; background:url(" + afLogoUrl + ") no-repeat center; background-size: contain;'></div>"
+            + "<div class='afGradientLine'></div><div style='padding: 30px; word-break: break-word;'>"
             + content
-            + "<div style='background-image: linear-gradient(to right, #1f1b5a , #2a8eca); color: #fff; padding: 10px;'>Visa lediga jobb</div>";
+            + "</div><div style='background-image: linear-gradient(to right, #2a8eca, #1f1b5a); color: #fff; padding: 10px;'>Visa lediga jobb</div>";
 
 
         var afJobCount = document.getElementById("afJobCount");
@@ -409,73 +408,47 @@ import './css/animate.css';
 
         }
 
-        if (afw.dataset.modal !== "false") {
-            var wrapper = createE("div");
-            wrapper.id = "afModalWrapper";
-            wrapper.innerHTML = `<div id='afModal' class='afmodal' style='display: none'>
-        <a href="#close-modal" class="close-modal ">Close</a>
-        <div id="afmodalContent">
-          <div class='afmodal-header afRow'>
-              <h2>Här har du jobben</h2>
-          </div>
-          <div class='afRow' >
-              <div id='afListContent' class="afListContent">
-                  <div class="afTable">
-                      <div id="afAnnonsTableBody" >
-                          <!-- generated rows will go here-->
-                      </div>
-                  </div>
-              </div>
-              <div class="afPaginationWrapper">
-                  <div class="afPagination"></div>
-              </div>
-          </div>
-        </div>
-      </div>`;
-            document.body.appendChild(wrapper);
-
-        } else {
-            afw.innerHTML = `
-      <div id="afmodalContent">
-        <div class='afmodal-header afRow'>
-            <h2>Här har du jobben</h2>
-        </div>
-        <div class='afRow' >
-            <div id='afListContent' class="afListContent">
-                <div class="afTable">
-                    <div id="afAnnonsTableBody" >
-                        <!-- generated rows will go here-->
+        var modalContent = `                
+            <div id="afmodalContent">
+                <div class='afmodal-header afRow'>
+                    <div class="afLogo"></div>
+                    <div class="afJtLogo"></div>
+                </div>
+                <div class='afGradientLine'></div>
+                <div class='afRow' >
+                    <div id='afListContent' class="afListContent">
+                        <div class="afTable">
+                            <div id="afAnnonsTableBody" >
+                                <!-- generated rows will go here-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="afPaginationWrapper">
+                        <div class="afPagination"></div>
                     </div>
                 </div>
-            </div>
-            <div class="afPaginationWrapper">
-                <div class="afPagination"></div>
-            </div>
-        </div>
-      </div>`;
+            </div>`;
+
+        if (afw.dataset.modal !== "false") {
+            var wrapper = createE("div");
+            wrapper.id = "afModalWrapper";                        
+            wrapper.innerHTML = `<div id='afModal' class='afmodal' style='display: none'>
+                    <a href="#close-modal" class="close-modal ">Close</a>`
+                    + modalContent;
+                    + `</div>`;
+            document.body.appendChild(wrapper);
+            wrapper.addEventListener('click', function (event) {
+                if(event.srcElement == wrapper) {
+                    event.preventDefault();
+                    removeClass(wrapper, "blocker");
+                    wrapper.firstChild.setAttribute("style", "display: none");
+                }
+            }, false);
+        } else {
+            afw.innerHTML = modalContent;
             getAds(1);
-
         }
 
-        // build header 
-        var t = document.querySelector("#afmodalContent h2");
-        t.innerText = 'Jobbannonser ';
-        if (afw.dataset.q) {
-            var q = document.createElement('span');
-            q.className = 'afSelected';
-            q.innerText = afw.dataset.q;
-            t.innerHTML = 'Annonser för ';
-            t.appendChild(q);
-        }
-
-        if (afw.dataset.places) {
-            var p = document.createElement('span');
-            p.className = 'afSelected';
-            p.innerText = afw.dataset.places;
-            t.innerHTML += ' att söka i ';
-            t.appendChild(p);
-
-        }
         if (afw.dataset.modal !== "false") {
             afw.onclick = function (e) {
                 e.preventDefault();
@@ -485,14 +458,11 @@ import './css/animate.css';
             };
         }
 
-
         // close modal. 
         addAdListener(".close-modal", function (e) {
             removeClass(wrapper, "blocker");
             wrapper.firstChild.setAttribute("style", "display: none");
         });
-
-
     });
 
     function parseTotal(adData) {
