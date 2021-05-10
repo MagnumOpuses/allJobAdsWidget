@@ -125,7 +125,7 @@ import './css/animate.css';
         }
         else {
             l('AllJobs headers set for: ' + url);
-            reqHeader.append('api-key', 'Y29tbXVuaXR5QGpvYnRlY2hkZXYuc2U');
+            reqHeader.append('api-key', process.env.APIKEY);
         }
 
         let initObject = {
@@ -440,7 +440,7 @@ import './css/animate.css';
             wrapper.addEventListener('click', function (event) {
                 if(event.srcElement == wrapper) {
                     event.preventDefault();
-                    removeClass(wrapper, "blocker");
+                    removeClass(wrapper, "afBlocker");
                     wrapper.firstChild.setAttribute("style", "display: none");
                 }
             }, false);
@@ -452,7 +452,7 @@ import './css/animate.css';
         if (afw.dataset.modal !== "false") {
             afw.onclick = function (e) {
                 e.preventDefault();
-                addClass(wrapper, "blocker");
+                addClass(wrapper, "afBlocker");
                 wrapper.firstChild.setAttribute("style", "display: inline-block");
                 getAds(1);
             };
@@ -460,7 +460,7 @@ import './css/animate.css';
 
         // close modal. 
         addAdListener(".close-modal", function (e) {
-            removeClass(wrapper, "blocker");
+            removeClass(wrapper, "afBlocker");
             wrapper.firstChild.setAttribute("style", "display: none");
         });
     });
@@ -604,7 +604,7 @@ import './css/animate.css';
                             currentPage: 1,	                  	// number
                             totalItems: total,                  // number
                             itemsPerPage: afw.dataset.limit,    // number
-                            step: 2,			                      // number
+                            step: 2,			                // number
                             onInit: getAds	                    // function
                         }
                     );
