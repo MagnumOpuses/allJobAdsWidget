@@ -623,7 +623,6 @@ import './css/animate.css';
                     annonser = annonsdata.platsannonser;
                 }
 
-                document.getElementById('afWidgetContainer').scrollIntoView();
                 annonser.forEach(function (annons) {
                     annonsTableBody.appendChild(addAdRow(annons));
                 });
