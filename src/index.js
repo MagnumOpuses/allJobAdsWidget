@@ -125,7 +125,7 @@ import './css/animate.css';
         }
         else {
             l('AllJobs headers set for: ' + url);
-            reqHeader.append('api-key', process.env.APIKEY);
+            reqHeader.append('api-key', 'Y29tbXVuaXR5QGpvYnRlY2hkZXYuc2U');
         }
 
         let initObject = {
@@ -373,12 +373,13 @@ import './css/animate.css';
         getStylesheet("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800");
 
         var afLogoUrl = scriptDomain + "/images/logo-af.svg";
-        var jtLogoUrl = scriptDomain + "/images/JobTechDevelopment_black.svg";
         var content = afw.innerHTML;
-        afw.innerHTML = "<div style='width: 100%; height:30px; margin-top:10px; margin-bottom:10px; background:url(" + afLogoUrl + ") no-repeat center; background-size: contain;'></div>"
-            + "<div class='afGradientLine'></div><div style='padding: 30px; word-break: break-word;'>"
+        afw.innerHTML = "<div class='afWidgetHeader'></div>"
+            + "<div class='afGradientLine'></div>"
+            + "<div style='padding: 30px; word-break: break-word;'>"
             + content
-            + "</div><div style='background-image: linear-gradient(to right, #2a8eca, #1f1b5a); color: #fff; padding: 10px;'>Visa lediga jobb</div>";
+            + "</div>"
+            + "<div class='afWidgetFooter'>Visa lediga jobb</div>";
 
 
         var afJobCount = document.getElementById("afJobCount");
@@ -415,17 +416,15 @@ import './css/animate.css';
                     <div class="afJtLogo"></div>
                 </div>
                 <div class='afGradientLine'></div>
-                <div class='afRow' >
-                    <div id='afListContent' class="afListContent">
-                        <div class="afTable">
-                            <div id="afAnnonsTableBody" >
-                                <!-- generated rows will go here-->
-                            </div>
+                <div id='afListContent' class="afListContent">
+                    <div class="afTable">
+                        <div id="afAnnonsTableBody" >
+                            <!-- generated rows will go here-->
                         </div>
                     </div>
-                    <div class="afPaginationWrapper">
-                        <div class="afPagination"></div>
-                    </div>
+                </div>
+                <div class="afPaginationWrapper">
+                    <div class="afPagination"></div>
                 </div>
             </div>`;
 
