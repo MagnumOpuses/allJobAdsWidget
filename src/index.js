@@ -125,7 +125,7 @@ import './css/animate.css';
         }
         else {
             l('AllJobs headers set for: ' + url);
-            reqHeader.append('api-key', 'Y29tbXVuaXR5QGpvYnRlY2hkZXYuc2U');
+            reqHeader.append('api-key', process.env.APIKEY);
         }
 
         let initObject = {
