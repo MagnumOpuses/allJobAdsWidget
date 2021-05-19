@@ -4,16 +4,15 @@ import 'whatwg-fetch';
 
 var pagination = require('pagination');
 
-import './css/AfPbWidget.css';
-import './css/animate.css';
+import './css/v2/AfPbWidget.css';
 
 (function (window, document) {
 
     // ---------------------------- Changeable variables start ---------------------------- //
 
     var logging = false;
-    var scriptDomain = getScriptURL().split('script/AfPbWidget.js')[0];
-    var cssUrl = scriptDomain + "/css/";
+    var scriptDomain = getScriptURL().split('script/v2/AfPbWidget.js')[0];
+    var cssUrl = scriptDomain + "/css/v2/";
     var lang = 'sv'  // en or sv
 
     // ---------------------------- Changable variables end ---------------------------- //
