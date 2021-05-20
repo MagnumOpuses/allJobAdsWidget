@@ -204,6 +204,7 @@ import './css/v2/AfPbWidget.css';
         var offset = 0;
         var showexpired = false;
         var q = '';
+        var ed = '';
         var occupationalid = "";
         var places = '';
         var occuids = '';
@@ -213,8 +214,6 @@ import './css/v2/AfPbWidget.css';
             var httpRequestString = allJobsApiUrl;
         }
 
-
-
         // fetch from container
         if (cont.dataset.limit) { limit = cont.dataset.limit; }
         if (page > 1) {
@@ -222,6 +221,7 @@ import './css/v2/AfPbWidget.css';
         }
         if (cont.dataset.showexpired) { showexpired = cont.dataset.showexpired; }
         if (cont.dataset.q) { q = cont.dataset.q; }
+        if (cont.dataset.ed) { ed = cont.dataset.ed; }
         if (cont.dataset.orgnumber) { orgnumber = cont.dataset.orgnumber; }
         /*if(cont.dataset.occupationalid) { occupationalid = cont.dataset.occupationalid; }*/
         if (cont.dataset.source != "all") {
@@ -230,8 +230,6 @@ import './css/v2/AfPbWidget.css';
                 var search = cont.dataset.places.split(',');
                 var response = fetchLocationId(search);
                 promises.push(response);
-
-
             }
             if (cont.dataset.occupationalid) {
                 var searchOccupationalid = cont.dataset.occupationalid.split(',');
@@ -239,8 +237,10 @@ import './css/v2/AfPbWidget.css';
                 promises.push(responseOccupatinalid);
             }
             httpRequestString += "search?q=" + q +
+                "&occupation-collection=" + ed +
                 "&offset=" + offset +
                 "&limit=" + limit;
+            console.log(httpRequestString);
             if (orgnumber) {
                 httpRequestString += '&employer=' + orgnumber;
             }
