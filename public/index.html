@@ -1,32 +1,95 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+
 <html lang="sv">
+
 <head>
-  <title>Jobtech widget</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" media="all" href="css/main.css">
-  <link href="css/v2/AfPbWidget.css?5c2710af07cff34eb11b" rel="stylesheet"></head>
+
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
+<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 4.3.1 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<link href="https://widgets.jobtechdev.se/alljobads/css/v2/AfPbWidget.css" rel="stylesheet">
+
+
+
+<link href="css/AfPbWidget.css?bb51e6b4358758b383c8" rel="stylesheet"></head>
 <body>
-  <div class="jumbotron text-center">
-    <h1>Jobtech widget</h1>
-    <p>Resize this responsive page to see the effect!</p> 
-  </div>   
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Exempel 1 <span class="sr-only">(current)</span></a>
-        </li>
-      </ul>
+
+<div class="container-fluid">
+
+<div class="row bg-light justify-content-md-center mb-5">
+  <div class="jumbotron jumbotron-fluid bg-light text-center">
+
+      <h1 class="display-4">Show job ads on your site</h1>
+      <p class="lead">A showcase of the Job vacancies widget</p>
+
+  </div>
+</div>
+
+<!--
+<div class="row justify-content-md-center">
+  <div class="col-md-4 text-center">
+    <div class="card-body">
+    <h4>Live demo</h4>
     </div>
-  </nav>
-  <div class="container">
-    <div class="row">
+    </div>
+</div>
+-->
+
+<div class="row justify-content-md-center">
+<!--
+<div class="col-md-3 text-center">
+<div class="card mb-4 mr-2 ml-2">
+  <img src="https://arbetsformedlingen.se/images/18.3e623d4f16735f3976e118c/1543311599553/Logga_negativ.png" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Platsbanken</h5>
+    <p class="card-text">Sök bland <pb-filtered-advert-count query-string="s=2"></pb-filtered-advert-count> annonser i Platsbanken</p>
+    <a href="https://arbetsformedlingen.se/platsbanken/annonser" class="btn btn-primary">Till Platsbanken</a>
+  </div>
+</div>
+</div>
+-->
+
+
+
+<div class="col-lg-3 text-center">
+  <div class="card mb-3 mr-2 ml-2" >
+      <!--    <img src="https://source.unsplash.com/DH5183gvKUg"> -->
+  <div class="card-body">
+          <div
+          id="afWidgetContainer"
+          data-limit="15"
+          data-showexpired="false"
+          data-q="stockholm"
+          data-ed="UdVa_jRr_9DE"
+          >
+          <div style="padding: 10px;">
+            <div style="text-align: center;">Just nu finns det</div>
+            <div
+              id="afJobCount"
+              style="
+                text-align: center;
+                font-weight: 600;
+                border: 3px solid #222222;
+                width: 60%;
+                margin: 10px auto;
+                border-radius: 5px;
+              "
+            ></div>
+            <div style="text-align: center; font-size: 13px">jobb som troligtivs inte kräver utbildning att söka i <strong>Stockholm</strong></div>
+          </div>
+        </div>
+        <p class="card-text mt-2 small">Eller gör din egen sökning bland <pb-filtered-advert-count></pb-filtered-advert-count> annonser
+        <a href="https://arbetsformedlingen.se/platsbanken/annonser">i Platsbanken</a></p>
+        </div>
+</div>
+</div>
+</div>
+
+
+<!--
+<div class="row">
       <div class="col-sm-4">
           <h3>Jobba här</h3>
           <img src="https://picsum.photos/300?image=1048">
@@ -41,7 +104,7 @@
           <div
             style="
             padding: 10px;"
-          > 
+          >
             <div style="text-align: center;">Just nu finns det</div>
             <div id="afJobCount"></div>
             <div style="text-align: center; font-size: 13px">lediga jobb att söka i <strong>Stockholm</strong></div>
@@ -62,6 +125,45 @@
       </div>
 
     </div>
+  -->
   </div>
-<script type="text/javascript" src="script/v2/AfPbWidget.js?5c2710af07cff34eb11b"></script></body>
+
+
+  <footer class="bg-light mt-5">
+    <div class="container-fluid">
+      <hr class="mt-0">
+      <div class="row mx-auto justify-content-md-center">
+        <div class="col-xs-6 col-md-3">
+          <h6>Jobtech Development</h6>
+          <p><a href="https://jobtechdev.se">JobTechdev.se</a> is a part of <a href="https://arbetsformedlingen.se"> Arbetsförmedlingen</a></p>
+        </div>
+
+        <div class="col-xs-6 col-md-3">
+          <h6>Information</h6>
+          <ul class="list-unstyled">
+            <li><a href="mailto:jobtechdev@arbetsformedlingen.se" class="text-dark">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="col-xs-6 col-md-3">
+          <h6>Licens</h6>
+          <ul class="list-unstyled">
+            <li><a href="https://www.gnu.org/licenses/agpl-3.0.en.html" class="text-dark">Source code</a></li>
+            <li><a href="https://creativecommons.org/licenses/by/4.0/" class="text-dark">Content</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://www.arbetsformedlingen.se/pb-widgets/widgets/widgets.esm.js" type="module"></script>
+<script src="https://widgets.jobtechdev.se/alljobads/script/v2/AfPbWidget.js" integrity=""></script>
+
+<script type="text/javascript" src="script/AfPbWidget.js?bb51e6b4358758b383c8"></script></body>
+
 </html>
