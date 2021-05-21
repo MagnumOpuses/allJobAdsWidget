@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="sv">
+<head>
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" media="all" href="css/main.css">
+</head>
+<body>
+  <div class="jumbotron text-center">
+    <h1><%= htmlWebpackPlugin.options.MyPageHeader %></h1>
+    <p>Resize this responsive page to see the effect!</p> 
+  </div>   
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Exempel 1 <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+          <h3>Jobba här</h3>
+          <img src="https://picsum.photos/300?image=1048">
+
+          <div
+          id="afWidgetContainer"
+          data-limit="5"
+          data-showexpired="false"
+          data-q="logoped"
+          data-occupationalid="BnhE_hcg_H2c"
+          data-places="sverige"
+          data-orgnumber=""
+          >
+          <div
+            style="
+            padding: 10px;"
+          > 
+            <div style="text-align: center;">Just nu finns det</div>
+            <div
+              id="afJobCount"
+              style="    
+                text-align: center;
+                font-weight: 600;
+                border: 3px solid #222222;
+                width: 60%;
+                margin: 10px auto;
+                border-radius: 5px; 
+              "
+            ></div>
+            <div style="text-align: center; font-size: 13px">lediga jobb att söka i <strong>Jokkmokk</strong> och <strong>Umeå</strong></div>
+          </div>
+        </div>
+        </div>
+      <div class="col-sm-4">
+        <h3>Lorem ipsum</h3>
+        <img src="https://picsum.photos/300?image=1067">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Dolor sit</h3>
+        <img src="https://picsum.photos/300?image=1076">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
