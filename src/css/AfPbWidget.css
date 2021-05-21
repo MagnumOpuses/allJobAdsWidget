@@ -25,7 +25,7 @@
 
 @media screen and (min-width: 768px) {
     .afmodal-header {
-        background-image: url(../images/jt_dev_logo_black.svg);
+    
         background-repeat: no-repeat;
         background-size: 100px;
         background-position: 10px;
