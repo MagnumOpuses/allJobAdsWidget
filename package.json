@@ -30,7 +30,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "npx webpack --watch",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --host 0.0.0.0",
     "build": "npx webpack --mode='development'",
     "prod": "npx webpack --mode='production'"
   },
