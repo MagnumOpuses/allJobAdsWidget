@@ -429,6 +429,7 @@ import './css/v2/AfPbWidget.css';
             <div id="afmodalContent">
                 <div class='afmodal-header afRow'>
                     <div class="afLogo"></div>
+        
                 </div>
                 <div class='afGradientLine'></div>
                 <div id='afListContent' class="afListContent">

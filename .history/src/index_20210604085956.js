@@ -407,28 +407,12 @@ import './css/v2/AfPbWidget.css';
             });
 
         }
- /*        var modalContent = `                
-        <div id="afmodalContent">
-            <div class='afmodal-header afRow'>
-                <div class="afLogo"></div>
-                <div class="afJtLogo"></div>
-            </div>
-            <div class='afGradientLine'></div>
-            <div id='afListContent' class="afListContent">
-                <div class="afTable">
-                    <div id="afAnnonsTableBody" >
-                        <!-- generated rows will go here-->
-                    </div>
-                </div>
-            </div>
-            <div class="afPaginationWrapper">
-                <div class="afPagination"></div>
-            </div>
-        </div>`; */
+
         var modalContent = `                
             <div id="afmodalContent">
                 <div class='afmodal-header afRow'>
                     <div class="afLogo"></div>
+                    '/<div class="afJtLogo"></div>
                 </div>
                 <div class='afGradientLine'></div>
                 <div id='afListContent' class="afListContent">

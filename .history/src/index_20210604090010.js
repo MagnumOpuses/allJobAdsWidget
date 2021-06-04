@@ -407,7 +407,7 @@ import './css/v2/AfPbWidget.css';
             });
 
         }
- /*        var modalContent = `                
+        var modalContent = `                
         <div id="afmodalContent">
             <div class='afmodal-header afRow'>
                 <div class="afLogo"></div>
@@ -424,11 +424,12 @@ import './css/v2/AfPbWidget.css';
             <div class="afPaginationWrapper">
                 <div class="afPagination"></div>
             </div>
-        </div>`; */
+        </div>`;
         var modalContent = `                
             <div id="afmodalContent">
                 <div class='afmodal-header afRow'>
                     <div class="afLogo"></div>
+                    <div class="afJtLogo"></div>
                 </div>
                 <div class='afGradientLine'></div>
                 <div id='afListContent' class="afListContent">
